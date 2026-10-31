@@ -1,0 +1,3411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Trip Architect">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0f2942">
+  <title>Pocket // Live-AI Trip Logistics Architect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: hsl(204, 75%, 22%);
+      --primary-light: hsl(204, 65%, 36%);
+      --accent: hsl(172, 66%, 38%);
+      --accent-hover: hsl(172, 72%, 30%);
+      --bg: hsl(206, 28%, 95%);
+      --card-bg: #ffffff;
+      --text: hsl(208, 38%, 14%);
+      --text-muted: hsl(208, 16%, 46%);
+      --border: hsl(208, 18%, 87%);
+      --timeline-dot: hsl(172, 62%, 42%);
+      --badge-drive-bg: hsl(210, 90%, 94%);
+      --badge-drive-txt: hsl(210, 80%, 30%);
+      --badge-ticket-bg: hsl(34, 100%, 92%);
+      --badge-ticket-txt: hsl(28, 85%, 32%);
+      --badge-food-bg: hsl(145, 75%, 92%);
+      --badge-food-txt: hsl(145, 75%, 26%);
+      --badge-free-bg: hsl(172, 70%, 91%);
+      --badge-free-txt: hsl(172, 80%, 24%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      color: var(--text);
+      background-color: #060913;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Strictly 480px centered mobile container */
+    .container {
+      max-width: 480px;
+      width: 100%;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      position: relative;
+      padding-bottom: 92px;
+    }
+
+    /* Top Bar Returning to Pocket Hub */
+    .pocket-topbar {
+      background: #070d1d;
+      color: #e2e8f0;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+      gap: 8px;
+    }
+
+    .hub-back-link {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preset-selector {
+      background: #111c38;
+      color: #f8fafc;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 6px;
+      padding: 4px 7px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      max-width: 175px;
+    }
+
+    .vault-btn {
+      background: rgba(45, 212, 191, 0.16);
+      color: #5eead4;
+      border: 1px solid rgba(45, 212, 191, 0.4);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Hero Header */
+    .header {
+      background: linear-gradient(135deg, hsl(204, 82%, 17%) 0%, hsl(176, 70%, 26%) 100%);
+      color: #ffffff;
+      padding: 20px 16px 18px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent) 0%, hsl(198, 80%, 50%) 100%);
+    }
+
+    .header-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: rgba(255, 255, 255, 0.14);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 12.5px;
+      opacity: 0.92;
+      font-weight: 400;
+    }
+
+    .header .base-hotel {
+      margin-top: 8px;
+      font-size: 11.5px;
+      background: rgba(255, 255, 255, 0.13);
+      padding: 5px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .header-action-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+
+    .hdr-dl-btn {
+      background: #ffffff;
+      color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 13px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease;
+    }
+
+    .hdr-dl-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Toast Banner */
+    .toast-banner {
+      display: none;
+      background: linear-gradient(90deg, #059669, #0d9488);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .toast-banner.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Saved Trips Drawer */
+    .saved-drawer {
+      display: none;
+      background: #0d162c;
+      color: #f8fafc;
+      padding: 14px 16px;
+      border-bottom: 2px solid #38bdf8;
+    }
+
+    .saved-drawer.open {
+      display: block;
+    }
+
+    .saved-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .saved-item-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mini-btn {
+      background: #38bdf8;
+      color: #060913;
+      border: none;
+      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mini-btn.keep {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+    }
+
+    .mini-btn.keep.active {
+      background: #10b981;
+      color: #052e16;
+      border: 1px solid #10b981;
+    }
+
+    .mini-btn.del {
+      background: rgba(244, 63, 94, 0.2);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    /* Overview Saved Plans Card Items */
+    .vault-card-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: hsl(206, 28%, 98%);
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .vault-card-item.is-kept {
+      border-left: 4px solid #10b981;
+      background: hsl(152, 45%, 97%);
+    }
+
+    .kept-pill {
+      display: inline-block;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      margin-left: 5px;
+    }
+
+    .draft-pill {
+      display: inline-block;
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      margin-left: 5px;
+    }
+
+    /* Tab Content Panels */
+    .tab-panel {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.18s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section & Card Styles */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    /* Dashboard Summary Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat-tile {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .stat-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .stat-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-full {
+      grid-column: 1 / -1;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-group label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .input-ctrl, .select-ctrl, .textarea-ctrl {
+      width: 100%;
+      padding: 9px 10px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text);
+      background: hsl(206, 28%, 98%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .input-ctrl:focus, .select-ctrl:focus, .textarea-ctrl:focus {
+      border-color: var(--accent);
+      background: #ffffff;
+    }
+
+    .pref-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pref-chip {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: hsl(206, 25%, 96%);
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .pref-chip.selected {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 44px;
+      padding: 11px 14px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: #ffffff;
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, hsl(172, 72%, 31%) 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.22);
+    }
+
+    .btn-ai {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    /* Accordion Day Cards */
+    .day-accordion {
+      margin-bottom: 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .day-accordion-header {
+      width: 100%;
+      background: linear-gradient(90deg, hsl(204, 50%, 96%) 0%, #ffffff 100%);
+      border: none;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .day-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .day-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .day-chevron {
+      font-size: 14px;
+      color: var(--primary);
+      transition: transform 0.2s ease;
+    }
+
+    .day-accordion.collapsed .day-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .day-accordion-body {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .day-accordion.collapsed .day-accordion-body {
+      display: none;
+    }
+
+    /* Vertical Timeline List */
+    .timeline-overview {
+      list-style: none;
+      padding: 12px 14px;
+      margin: 0 0 16px 0;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 18px;
+      font-size: 12px;
+      margin-bottom: 7px;
+      color: var(--text);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--timeline-dot);
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-time {
+      font-weight: 700;
+      color: var(--primary-light);
+    }
+
+    /* Detailed Activity Block Cards */
+    .activity-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .card-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent);
+    }
+
+    .status-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .badge-drive { background: var(--badge-drive-bg); color: var(--badge-drive-txt); }
+    .badge-ticket { background: var(--badge-ticket-bg); color: var(--badge-ticket-txt); }
+    .badge-food { background: var(--badge-food-bg); color: var(--badge-food-txt); }
+    .badge-free { background: var(--badge-free-bg); color: var(--badge-free-txt); }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 12.5px;
+    }
+
+    .info-row {
+      border-bottom: 1px solid hsl(204, 20%, 93%);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      padding: 5px 0;
+      color: var(--text-muted);
+      font-weight: 600;
+      width: 98px;
+      vertical-align: top;
+    }
+
+    .info-value {
+      padding: 5px 0 5px 8px;
+      color: var(--text);
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    .info-value a {
+      color: var(--primary-light);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .copy-pill {
+      display: inline-block;
+      background: hsl(206, 25%, 93%);
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .note-box {
+      font-size: 11.5px;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-top: 7px;
+      line-height: 1.4;
+    }
+
+    .weather-alt {
+      background-color: hsl(208, 45%, 95%);
+      border-left: 3px solid var(--primary-light);
+      color: var(--primary);
+    }
+
+    .pro-tip {
+      background-color: hsl(44, 100%, 95%);
+      border-left: 3px solid hsl(38, 92%, 50%);
+      color: hsl(32, 85%, 26%);
+    }
+
+    .next-leg {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Checklist Styles */
+    .checklist-group {
+      margin-bottom: 14px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: hsl(206, 28%, 98%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s ease;
+    }
+
+    .check-item.checked {
+      opacity: 0.6;
+      text-decoration: line-through;
+      background: hsl(150, 30%, 95%);
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* Prompt Output Box */
+    .prompt-pre {
+      background: #0b1326;
+      color: #e2e8f0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 12px;
+      border-radius: 8px;
+      max-height: 210px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      margin: 8px 0;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* Sticky Bottom Touch Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 6px 4px 10px;
+      z-index: 150;
+      box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-tab {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 4px;
+      font-family: inherit;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px;
+      min-height: 48px;
+    }
+
+    .nav-tab .nav-ico {
+      font-size: 18px;
+    }
+
+    .nav-tab.active {
+      color: var(--primary);
+      background: hsl(204, 60%, 95%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top Pocket Ecosystem Bar -->
+    <div class="pocket-topbar">
+      <a href="../../index.html" class="hub-back-link">← POCKET HUB</a>
+      <div class="topbar-controls">
+        <select id="presetSelect" class="preset-selector" title="Load Real Trip Preset">
+          <option value="custom">✨ Custom City (Auto-Discover)</option>
+          <option value="kerala">Kannur → Kochi, Kerala</option>
+          <option value="charleston">Charleston, SC</option>
+          <option value="obx">Outer Banks, NC</option>
+          <option value="niagara">Niagara Falls, NY</option>
+          <option value="gatlinburg">Gatlinburg, TN</option>
+          <option value="savannah">Savannah, GA</option>
+        </select>
+        <button class="vault-btn" id="toggleVaultBtn">📂 Saved (<span id="savedCountBadge">0</span>)</button>
+      </div>
+    </div>
+
+    <!-- Saved Trips Vault Drawer -->
+    <div class="saved-drawer" id="savedDrawer">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:6px; flex-wrap:wrap;">
+        <span style="font-size:11px; font-weight:700; color:#38bdf8; text-transform:uppercase;">📂 Saved Travel Plans (Keep & Delete)</span>
+        <div style="display:flex; gap:6px;">
+          <button class="mini-btn keep active" id="saveCurrentToVaultBtn">📌 Keep Current Plan</button>
+          <button class="mini-btn del" id="clearUnkeptDrawerBtn" title="Delete all plans not marked as Kept">🧹 Clear Unkept</button>
+        </div>
+      </div>
+      <div id="savedTripsList"></div>
+    </div>
+
+    <!-- Dynamic Trip Header -->
+    <div class="header">
+      <div class="header-tag" id="hdrPaceBadge">⚡ LIVE-AI & SMART ROUTE OPTIMIZER</div>
+      <h1 id="hdrTitle">Kochi Family Trip</h1>
+      <p id="hdrSub">Kannur, Kerala → Kochi, Kerala | Aug 6 – 8, 2026</p>
+      <div class="base-hotel" id="hdrHotel">🏨 Base: Fort Kochi Heritage Resort</div>
+      <div class="header-action-row" style="flex-wrap:wrap;">
+        <button class="hdr-dl-btn" id="keepHeaderBtn" style="background:#10b981; color:#052e16;">
+          📌 Keep Travel Plan
+        </button>
+        <button class="hdr-dl-btn" id="downloadCompanionBtn">
+          📲 Download Offline App (.html)
+        </button>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toastBanner" class="toast-banner"></div>
+
+    <!-- ==================== TAB 1: OVERVIEW & LIVE-AI STUDIO ==================== -->
+    <div class="tab-panel active" id="tab-overview">
+      <!-- Live Dashboard Stats -->
+      <div class="stats-grid">
+        <div class="stat-tile">
+          <div class="stat-label">Trip Span / Countdown</div>
+          <div class="stat-val" id="statCountdown">3 Days</div>
+          <div class="stat-sub" id="statDates">Aug 6 – Aug 8</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Est. Family Cost</div>
+          <div class="stat-val" id="statTotalCost">$385</div>
+          <div class="stat-sub" id="statPartySub">2 Adults, 3 Kids</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Seasonal Weather</div>
+          <div class="stat-val" id="statWeather">86°F /☀️</div>
+          <div class="stat-sub" id="statHeatWindow">A/C Buffer: 12–3:30 PM</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Packing Readiness</div>
+          <div class="stat-val" id="statPackPct">0%</div>
+          <div class="stat-sub" id="statChecklistCount">Dynamic Checklist</div>
+        </div>
+      </div>
+
+      <!-- Primary Action Bar: Map + Offline Download -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom: 16px;">
+        <a href="#" id="fullTripMapBtn" target="_blank" class="btn-action btn-accent" style="font-size:12px;">
+          🗺️ Full-Trip Route Map
+        </a>
+        <button class="btn-action btn-primary" id="downloadCompanionBtn2" style="font-size:12px;">
+          📥 Download Trip (.html)
+        </button>
+      </div>
+
+      <!-- Dynamic Input Studio -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>🎛️ 1. Trip Parameters & Constraints</span>
+          <span style="font-size:10px; color:var(--accent);">DRIVES PROMPT & OPTIMIZER</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Origin City</label>
+            <input type="text" id="cfgOrigin" class="input-ctrl" value="Kannur, Kerala" placeholder="e.g., Charlotte, NC">
+          </div>
+          <div class="field-group">
+            <label>Destination City, State</label>
+            <input type="text" id="cfgDest" class="input-ctrl" value="Kochi, Kerala" placeholder="e.g., Munnar, Kerala">
+          </div>
+          <div class="field-group">
+            <label>Start Date</label>
+            <input type="date" id="cfgStart" class="input-ctrl" value="2026-08-06">
+          </div>
+          <div class="field-group">
+            <label>End Date</label>
+            <input type="date" id="cfgEnd" class="input-ctrl" value="2026-08-08">
+          </div>
+          <div class="field-group">
+            <label>Adults Count</label>
+            <input type="number" id="cfgAdults" class="input-ctrl" min="1" max="15" value="2">
+          </div>
+          <div class="field-group">
+            <label>Children Count</label>
+            <input type="number" id="cfgKids" class="input-ctrl" min="0" max="15" value="3">
+          </div>
+          <div class="field-group">
+            <label>Kids Ages (comma-sep)</label>
+            <input type="text" id="cfgAges" class="input-ctrl" value="9, 10, 13" placeholder="e.g., 8, 10, 13">
+          </div>
+          <div class="field-group">
+            <label>Daily Pace</label>
+            <select id="cfgPace" class="select-ctrl">
+              <option value="relaxed">Relaxed (2 main blocks/day)</option>
+              <option value="balanced">Balanced (3–4 blocks + A/C rest)</option>
+              <option value="packed" selected>Action-Packed (5 blocks/day)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Transport Mode</label>
+            <select id="cfgTransport" class="select-ctrl">
+              <option value="road" selected>🚗 Road Trip (Own Vehicle)</option>
+              <option value="rental">🚙 Rental Car Road Trip</option>
+              <option value="flight">✈️ Flight + Local Transit/Uber</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Budget Priority</label>
+            <select id="cfgBudget" class="select-ctrl">
+              <option value="cost-effective" selected>💰 Cost-Effective (Free/Online First)</option>
+              <option value="moderate">⚖️ Moderate Family Balance</option>
+              <option value="premium">✨ Premium / All-Access</option>
+            </select>
+          </div>
+          <div class="field-group form-full">
+            <label>Base Hotel / Lodging Name & Address</label>
+            <input type="text" id="cfgHotel" class="input-ctrl" value="Marriott Courtyard / Fort Kochi Heritage Resort, Kochi, Kerala">
+          </div>
+          <div class="field-group form-full">
+            <label>Day 1 Eating Stop / Midway Pit-Stop</label>
+            <input type="text" id="cfgDay1Food" class="input-ctrl" value="Paragon Restaurant, Kozhikode (Calicut) Highway Lunch & Kashi Art Cafe, Fort Kochi">
+          </div>
+          <div class="field-group form-full">
+            <label>Specific Must-See Attractions (Comma-Separated)</label>
+            <input type="text" id="cfgMustSees" class="input-ctrl" value="Marine Drive & Subhash Bose Park Ernakulam, Fort Kochi Chinese Fishing Nets & Vasco da Gama Square, Mattancherry Dutch Palace & Jew Town, Kerala Folklore Museum, Cherai Beach Vypin Island, Santa Cruz Cathedral Basilica Fort Kochi, Hill Palace Museum Tripunithura">
+          </div>
+          <div class="field-group form-full">
+            <label>Check-In Rules & Explicit Exclusions (e.g., "Exclude Folly Beach")</label>
+            <input type="text" id="cfgConstraints" class="input-ctrl" value="Check-in after 3:00 PM Day 1; cluster Fort Kochi & Mattancherry together; indoor museums 12:00–3:15 PM">
+          </div>
+          <div class="field-group form-full">
+            <label>Themes & Dining Preferences (Tap to Toggle)</label>
+            <div class="pref-chips" id="themeChips">
+              <span class="pref-chip selected" data-theme="beach">🏖️ Beach & Waterfront</span>
+              <span class="pref-chip selected" data-theme="history">⚓ History & Landmarks</span>
+              <span class="pref-chip selected" data-theme="indian">🍛 Indian Dinner</span>
+              <span class="pref-chip selected" data-theme="mass">⛪ Sunday Catholic Mass</span>
+              <span class="pref-chip selected" data-theme="parks">🛝 Shaded Parks & Splash</span>
+              <span class="pref-chip selected" data-theme="science">🐠 Aquarium & STEM Museum</span>
+              <span class="pref-chip" data-theme="localfood">🍕 Local Pizza & Seafood</span>
+              <span class="pref-chip" data-theme="fireworks">🎆 Fireworks & Night Walk</span>
+              <span class="pref-chip" data-theme="nature">⛰️ Scenic Trails & Overlooks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Live-AI Optimization Engine Card -->
+      <div class="section-card" style="border: 2px solid #6366f1;">
+        <div class="section-title">
+          <span style="color:#4f46e5;">🤖 2. Live-AI & Prompt Optimization Engine</span>
+          <span style="font-size:10px; background:#e0e7ff; color:#4338ca; padding:2px 7px; border-radius:99px;">DUAL AI MODES</span>
+        </div>
+
+        <!-- Mode A: Direct 1-Click Gemini API -->
+        <div style="background:hsl(235, 60%, 97%); border:1px solid #c7d2fe; border-radius:8px; padding:12px; margin-bottom:12px;">
+          <div style="font-size:12px; font-weight:700; color:#3730a3; margin-bottom:4px;">
+            ⚡ Mode A: 1-Click Live Gemini AI Optimization (Recommended)
+          </div>
+          <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">
+            Uses your Gemini API key (saved once in your browser's `localStorage`) to research real attraction hours, online vs. onsite ticket prices, and zero-backtracking routes for ANY city worldwide.
+          </p>
+          <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <input type="password" id="geminiApiKey" class="input-ctrl" placeholder="Paste Gemini API Key (AIzaSy...) — Saved automatically" style="background:#fff;">
+          </div>
+          <button class="btn-action btn-ai" id="runGeminiLiveBtn">
+            🚀 Optimize & Generate Live via Gemini AI
+          </button>
+        </div>
+
+        <!-- Instant Smart Local Optimizer -->
+        <div style="margin-bottom:12px;">
+          <button class="btn-action btn-accent" id="generateDynamicBtn">
+            ⚡ Instant Smart Route Synthesis (Offline Engine + Jump to Timeline)
+          </button>
+        </div>
+
+        <!-- Mode B: Copy Prompt -> Paste Any AI Response Bridge -->
+        <details style="font-size:12px; border-top:1px dashed var(--border); padding-top:10px;">
+          <summary style="font-weight:700; color:var(--primary); cursor:pointer;">
+            📋 Mode B: Copy Optimized Prompt → Paste AI Response (Free ChatGPT / Claude / Gemini Web Bridge)
+          </summary>
+          <div style="margin-top:10px;">
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">
+              <b>Step 1:</b> Copy this dynamically synchronized prompt (includes strict JSON schema at bottom) into ChatGPT, Claude, or Gemini web chat:
+            </p>
+            <pre class="prompt-pre" id="promptPre"></pre>
+            <button class="btn-action btn-outline" id="copyPromptBtn" style="margin-bottom:12px;">
+              📋 Copy Full Prompt (with JSON Schema)
+            </button>
+
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">
+              <b>Step 2:</b> Paste the AI's JSON response below and click <b>Import AI Plan</b> to populate all tabs:
+            </p>
+            <textarea id="pasteAiJsonInput" class="textarea-ctrl" rows="4" placeholder='Paste the JSON response from ChatGPT / Claude / Gemini here...'></textarea>
+            <button class="btn-action btn-primary" id="importAiJsonBtn" style="margin-top:8px;">
+              📥 Import Pasted AI Response into App
+            </button>
+          </div>
+        </details>
+      </div>
+
+      <!-- Saved Travel Plans Manager Card (Keep, Load, Download & Delete) -->
+      <div class="section-card" id="overviewVaultCard">
+        <div class="section-title">
+          <span>📂 3. Saved Travel Plans (Keep & Delete)</span>
+          <div style="display:flex; gap:6px;">
+            <button class="copy-pill" id="keepCurrentOverviewBtn" style="background:#d1fae5; color:#065f46; border-color:#10b981;">📌 Keep Current</button>
+            <button class="copy-pill" id="clearUnkeptOverviewBtn" style="background:#ffe4e6; color:#9f1239; border-color:#fda4af;">🗑️ Delete Unkept</button>
+          </div>
+        </div>
+        <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
+          Every generated itinerary is listed below. Tap <b>📌 Keep</b> to lock & pin plans you want to preserve, <b>📂 Load</b> to switch between plans, <b>📥 .html</b> to download offline, or <b>🗑️ Delete</b> to remove unwanted plans.
+        </p>
+        <div id="overviewSavedTripsList"></div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: DAY-BY-DAY TIMELINE ==================== -->
+    <div class="tab-panel" id="tab-timeline">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="font-size:12px; font-weight:700; color:var(--text-muted);" id="timelineHeaderSummary">DYNAMIC DAY-BY-DAY TIMELINE</span>
+        <button class="copy-pill" id="toggleAllDaysBtn" style="padding:5px 10px; font-size:11px;">Expand / Collapse All</button>
+      </div>
+
+      <!-- Dynamic Days Container -->
+      <div id="daysContainer"></div>
+
+      <!-- Add Custom Stop / Activity Block -->
+      <div class="section-card">
+        <div class="section-title">➕ Add Extra Custom Block to Any Day</div>
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Target Day</label>
+            <select id="addBlockDay" class="select-ctrl"></select>
+          </div>
+          <div class="field-group">
+            <label>Time Window</label>
+            <input type="text" id="addBlockTime" class="input-ctrl" placeholder="e.g., 2:30 PM – 4:00 PM">
+          </div>
+          <div class="field-group form-full">
+            <label>Activity Title</label>
+            <input type="text" id="addBlockTitle" class="input-ctrl" placeholder="e.g., Sunset Harbor Gelato Walk">
+          </div>
+          <div class="field-group">
+            <label>Badge Type</label>
+            <select id="addBlockBadge" class="select-ctrl">
+              <option value="free">Free / Park</option>
+              <option value="ticket">Ticket Required</option>
+              <option value="food">Food Stop</option>
+              <option value="drive">Drive Time</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Adult / Kid Price ($)</label>
+            <input type="text" id="addBlockCost" class="input-ctrl" placeholder="e.g., 15 / 10">
+          </div>
+          <div class="field-group form-full">
+            <label>Google Maps Search Address</label>
+            <input type="text" id="addBlockMap" class="input-ctrl" placeholder="Exact attraction or restaurant address">
+          </div>
+          <div class="field-group form-full">
+            <label>Activities & Pro-Tip</label>
+            <input type="text" id="addBlockDesc" class="input-ctrl" placeholder="What to do + cost or timing tip">
+          </div>
+        </div>
+        <button class="btn-action btn-primary" id="saveCustomBlockBtn" style="margin-top:12px;">Add Block to Day</button>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: LOGISTICS & BOOKINGS ==================== -->
+    <div class="tab-panel" id="tab-logistics">
+      <!-- Accommodations & Check-In -->
+      <div class="section-card">
+        <div class="section-title">🏨 Dynamic Lodging & Transit Logistics</div>
+        <table class="info-table" id="logisticsHotelTable"></table>
+        <a href="#" id="hotelMapBtn" target="_blank" class="btn-action btn-outline" style="margin-top:8px;">📍 Navigate to Base Lodging in Google Maps</a>
+      </div>
+
+      <!-- Cost & Advance Booking Breakdown -->
+      <div class="section-card">
+        <div class="section-title">🎟️ Dynamic Cost & Booking Breakdown</div>
+        <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">
+          Itemized across all generated days for <b id="costPartyLabel">2 Adults + 3 Kids</b>:
+        </p>
+        <div id="costBreakdownList"></div>
+      </div>
+
+      <!-- Weather & Golden Hour Readiness -->
+      <div class="section-card">
+        <div class="section-title">🌤️ Destination Weather & Pacing Strategy</div>
+        <table class="info-table" id="weatherLogisticsTable"></table>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: INTERACTIVE CHECKLIST ==================== -->
+    <div class="tab-panel" id="tab-checklist">
+      <div class="section-card">
+        <div class="section-title">
+          <span>✅ Tailored Packing & Pre-Trip Vault</span>
+          <button class="copy-pill" id="resetChecksBtn">Regenerate Checks</button>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;" id="checklistSubtitle">
+          Automatically tailored to your transport mode, season, kids' ages, and selected themes. Saved in `localStorage`.
+        </p>
+        <div id="checklistContainer"></div>
+
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <input type="text" id="newCheckInput" class="input-ctrl" placeholder="Add custom packing item or task...">
+          <button class="btn-action btn-primary" id="addCheckBtn" style="width:auto; padding:0 16px;">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-tab active" data-tab="tab-overview">
+        <span class="nav-ico">🎛️</span>
+        <span>Overview</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-timeline">
+        <span class="nav-ico">🗓️</span>
+        <span>Timeline</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-logistics">
+        <span class="nav-ico">🎟️</span>
+        <span>Logistics</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-checklist">
+        <span class="nav-ico">☑️</span>
+        <span>Checklist</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    // ==================== CURATED PRESET PROFILES ====================
+    const PRESET_CONFIGS = {
+      charleston: {
+        origin: "Charlotte, NC",
+        dest: "North Charleston, SC",
+        startDate: "2026-07-03",
+        endDate: "2026-07-05",
+        adults: 2,
+        kids: 3,
+        ages: "8, 10, 13",
+        pace: "balanced",
+        transport: "road",
+        budget: "cost-effective",
+        hotel: "SpringHill Suites by Marriott, 7535 N Forest Drive, North Charleston, SC 29420",
+        day1Food: "Ye Olde Fashioned Ice Cream & Sandwich Cafe, North Charleston, SC",
+        mustSees: "Patriots Point USS Yorktown, Wannamaker County Park, Isle of Palms County Park Beach, Park Circle Inclusive Playground, Fort Sumter Visitor Education Center",
+        constraints: "Check-in anytime before 9:30 PM Day 1; avoid 12–3:30 PM peak heat; minimize bridge backtracking",
+        themes: ["beach", "history", "indian", "mass", "parks", "fireworks"]
+      },
+      obx: {
+        origin: "Charlotte, NC",
+        dest: "Kill Devil Hills, Outer Banks, NC",
+        startDate: "2026-08-06",
+        endDate: "2026-08-08",
+        adults: 2,
+        kids: 3,
+        ages: "9, 10, 13",
+        pace: "packed",
+        transport: "road",
+        budget: "cost-effective",
+        hotel: "Sea Ranch Resort, 1731 N. Virginia Dare Trail, Kill Devil Hills, NC 27948",
+        day1Food: "Williamston Highway Lunch Stop & Goombays Grille Kill Devil Hills",
+        mustSees: "Jockey's Ridge State Park Sunset Dunes, Wright Brothers National Memorial, NC Aquarium on Roanoke Island, Roanoke Marshes Lighthouse, Bodie Island Lighthouse",
+        constraints: "Check-in after 4:00 PM Day 1; schedule ocean/dunes in cooler morning or sunset slots",
+        themes: ["beach", "history", "science", "localfood", "nature"]
+      },
+      niagara: {
+        origin: "Charlotte, NC",
+        dest: "Niagara Falls, NY",
+        startDate: "2026-07-14",
+        endDate: "2026-07-17",
+        adults: 2,
+        kids: 3,
+        ages: "9, 10, 13",
+        pace: "packed",
+        transport: "road",
+        budget: "cost-effective",
+        hotel: "Sheraton Niagara Falls, 300 3rd St, Niagara Falls, NY 14303",
+        day1Food: "Zaika Indian Cuisine Buffet & The Silo Restaurant Lewiston",
+        mustSees: "Maid of the Mist Boat Tour, Cave of the Winds Goat Island, Whirlpool State Park Rim Trail, NYPA Niagara Power Vista, Letchworth State Park Gorge, Hershey's Chocolate World",
+        constraints: "Walk from Sheraton to State Park to save parking; mix mist boat tours with indoor STEM centers",
+        themes: ["history", "indian", "science", "nature", "fireworks", "mass"]
+      },
+      gatlinburg: {
+        origin: "Charlotte, NC",
+        dest: "Gatlinburg, TN",
+        startDate: "2026-11-05",
+        endDate: "2026-11-08",
+        adults: 2,
+        kids: 3,
+        ages: "8, 10, 13",
+        pace: "packed",
+        transport: "road",
+        budget: "cost-effective",
+        hotel: "Margaritaville Resort Gatlinburg, 539 Parkway, Gatlinburg, TN 37738",
+        day1Food: "Applewood Farmhouse Restaurant, Sevierville, TN",
+        mustSees: "Mynatt Park Gatlinburg, Clingmans Dome Observation Tower, Ripley's Aquarium of the Smokies, Anakeesta Mountain Park, Cades Cove Scenic Loop, Sugarlands Visitor Center",
+        constraints: "Check-in after 4:00 PM Day 1; use $5 National Park daily parking tag; Sunday morning Mass at St. Mary's Gatlinburg",
+        themes: ["nature", "science", "indian", "mass", "parks", "localfood"]
+      },
+      savannah: {
+        origin: "Charlotte, NC",
+        dest: "Savannah, GA",
+        startDate: "2026-10-16",
+        endDate: "2026-10-18",
+        adults: 2,
+        kids: 3,
+        ages: "8, 10, 13",
+        pace: "balanced",
+        transport: "road",
+        budget: "cost-effective",
+        hotel: "SpringHill Suites by Marriott Savannah Downtown Historic District, 150 Montgomery St, Savannah, GA 31401",
+        day1Food: "Zunzi's South African Sandwich Shop, Drayton St, Savannah, GA",
+        mustSees: "Forsyth Park Fountain & Playground, Fort Pulaski National Monument, Tybee Island North Beach & Pier, Cathedral Basilica of St. John the Baptist, Savannah Children's Museum & Georgia State Railroad Museum",
+        constraints: "Check-in at 4:00 PM Day 1; group Tybee Island & Fort Pulaski together on US-80 to eliminate backtracking",
+        themes: ["beach", "history", "indian", "mass", "parks"]
+      },
+      kerala: {
+        origin: "Kannur, Kerala",
+        dest: "Kochi, Kerala",
+        startDate: "2026-08-06",
+        endDate: "2026-08-08",
+        adults: 2,
+        kids: 3,
+        ages: "9, 10, 13",
+        pace: "packed",
+        transport: "road",
+        budget: "cost-effective",
+        hotel: "Marriott Courtyard / Fort Kochi Heritage Resort, Kochi, Kerala",
+        day1Food: "Paragon Restaurant, Kozhikode (Calicut) Highway Lunch & Kashi Art Cafe, Fort Kochi",
+        mustSees: "Marine Drive & Subhash Bose Park Ernakulam, Fort Kochi Chinese Fishing Nets & Vasco da Gama Square, Mattancherry Dutch Palace & Jew Town, Kerala Folklore Museum, Cherai Beach Vypin Island, Santa Cruz Cathedral Basilica Fort Kochi, Hill Palace Museum Tripunithura",
+        constraints: "Check-in after 3:00 PM Day 1; cluster Fort Kochi & Mattancherry together to avoid harbour bridge backtracking; schedule indoor museums during midday monsoon/heat window",
+        themes: ["beach", "history", "indian", "mass", "parks", "science"]
+      }
+    };
+
+    // Destination Auto-Discovery Profile Catalog
+    const DEST_AUTO_CATALOG = [
+      {
+        match: /munnar|idukki/i,
+        hotel: "Tea Valley Resort / Sterling Munnar, Chithirapuram, Munnar, Kerala",
+        day1Food: "Saravana Bhavan Highway Lunch & Rapsy Restaurant Munnar",
+        mustSees: "Cheeyappara & Valara Waterfalls, Eravikulam National Park (Rajamalai), Tata Tea Museum Munnar, Mattupetty Dam & Echo Point, Top Station Viewpoint, Blossom Hydel Park Munnar",
+        constraints: "Start Eravikulam National Park at 8:30 AM before mist/crowds; layer light mountain jackets"
+      },
+      {
+        match: /wayanad|kalpetta|sultan bathery/i,
+        hotel: "Vythiri Resort / Sterling Wayanad, Sultan Bathery, Wayanad, Kerala",
+        day1Food: "Wilton Restaurant Sulthan Bathery & 1980's A Nostalgic Restaurant Kalpetta",
+        mustSees: "Lakkidi View Point & Pookode Lake, Edakkal Caves, Banasura Sagar Dam & Speed Boating, Wayanad Heritage Museum Ambalavayal, Soochipara Waterfalls, En Ooru Tribal Heritage Village",
+        constraints: "Climb Edakkal Caves at 9:00 AM before midday sun; book En Ooru entry tickets ahead"
+      },
+      {
+        match: /alappuzha|alleppey|kumarakom/i,
+        hotel: "Lake Palace Resort / Sterling Lake Palace, Alappuzha, Kerala",
+        day1Food: "Halais Restaurant Alappuzha & Cassia Toddy & Seafood Restaurant",
+        mustSees: "Alappuzha Beach & Historic Pier, Vembanad Lake Shikara & Backwater Cruise, Revi Karunakaran Memorial Museum, Marari Beach Sunset Shore, St. Mary's Forane Church Champakulam, Pathiramanal Island Bird Sanctuary",
+        constraints: "Board morning backwater Shikara boat between 8:30–11:30 AM; indoor Revi Museum 12:30–3:00 PM"
+      },
+      {
+        match: /kochi|cochin|ernakulam/i,
+        hotel: "Fort Kochi Heritage Hotel / Courtyard by Marriott Kochi, Kerala",
+        day1Food: "Paragon Restaurant Kozhikode (NH-66 Midway Stop) & Fort Kochi Seafood Cafe",
+        mustSees: "Subhash Bose Park & Marine Drive Kochi, Fort Kochi Chinese Fishing Nets & Promenade, Mattancherry Palace & Jew Town, Kerala Folklore Museum Thevara, Cherai Beach Vypin Island, Santa Cruz Cathedral Basilica Fort Kochi, Hill Palace Museum Tripunithura",
+        constraints: "Check-in after 3:00 PM Day 1; group Fort Kochi & Mattancherry together; indoor museums 12:00–3:15 PM"
+      },
+      {
+        match: /charleston/i,
+        hotel: PRESET_CONFIGS.charleston.hotel,
+        day1Food: PRESET_CONFIGS.charleston.day1Food,
+        mustSees: PRESET_CONFIGS.charleston.mustSees,
+        constraints: PRESET_CONFIGS.charleston.constraints
+      },
+      {
+        match: /outer banks|obx|kill devil|nags head/i,
+        hotel: PRESET_CONFIGS.obx.hotel,
+        day1Food: PRESET_CONFIGS.obx.day1Food,
+        mustSees: PRESET_CONFIGS.obx.mustSees,
+        constraints: PRESET_CONFIGS.obx.constraints
+      },
+      {
+        match: /niagara/i,
+        hotel: PRESET_CONFIGS.niagara.hotel,
+        day1Food: PRESET_CONFIGS.niagara.day1Food,
+        mustSees: PRESET_CONFIGS.niagara.mustSees,
+        constraints: PRESET_CONFIGS.niagara.constraints
+      },
+      {
+        match: /gatlinburg|smoky|pigeon forge/i,
+        hotel: PRESET_CONFIGS.gatlinburg.hotel,
+        day1Food: PRESET_CONFIGS.gatlinburg.day1Food,
+        mustSees: PRESET_CONFIGS.gatlinburg.mustSees,
+        constraints: PRESET_CONFIGS.gatlinburg.constraints
+      },
+      {
+        match: /savannah|tybee/i,
+        hotel: PRESET_CONFIGS.savannah.hotel,
+        day1Food: PRESET_CONFIGS.savannah.day1Food,
+        mustSees: PRESET_CONFIGS.savannah.mustSees,
+        constraints: PRESET_CONFIGS.savannah.constraints
+      }
+    ];
+
+    // Real-World Pricing, Official URL & Pro-Tip Knowledge Base
+    const REAL_PLACE_KB = [
+      {
+        match: /yorktown|patriots point/i,
+        url: "https://www.patriotspoint.org/",
+        urlText: "Patriots Point Official Tickets",
+        badge: "ticket",
+        badgeText: "Online Advance",
+        adultCost: 29,
+        kidCost: 19,
+        flatCost: 10,
+        costNote: "Online Advance: $29 Adult / $19 Child (Saves $3/ticket vs Onsite) + $10 Parking",
+        desc: "Explore the WWII aircraft carrier USS Yorktown, flight deck aircraft, USS Laffey destroyer, and indoor hangar bays.",
+        proTip: "Tour the open-air flight deck first at 9:00 AM before midday UV peaks, then move to the covered hangar decks."
+      },
+      {
+        match: /wannamaker/i,
+        url: "https://www.ccprc.com/143/Wannamaker-County-Park",
+        urlText: "Charleston County Parks Site",
+        badge: "ticket",
+        badgeText: "$2 County Park",
+        adultCost: 2,
+        kidCost: 2,
+        flatCost: 0,
+        costNote: "Onsite Gate Entry: $2.00 per person ($10 total for family of 5)",
+        desc: "Over 1,000 acres of shaded trails, massive playgrounds, and a free seasonal sprinkler/splash play area.",
+        proTip: "Change kids at the park bathhouse before driving 5 minutes to SpringHill Suites check-in."
+      },
+      {
+        match: /isle of palms/i,
+        url: "https://www.ccprc.com/60/Isle-of-Palms-County-Park",
+        urlText: "IOP County Park Official Info",
+        badge: "ticket",
+        badgeText: "Parking Fee Only",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 15,
+        costNote: "Beach Entry: FREE | County Park Lot Parking: $15 per vehicle",
+        desc: "Lifeguarded oceanfront beach with boardwalk showers, changing rooms, shaded picnic tables, and sand playground.",
+        proTip: "Arriving at 3:30 PM catches morning beachgoers leaving, opening up front-row parking."
+      },
+      {
+        match: /fort sumter/i,
+        url: "https://www.nps.gov/fosu/index.htm",
+        urlText: "NPS Fort Sumter Official Page",
+        badge: "free",
+        badgeText: "Free NPS Museum",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 6,
+        costNote: "Visitor Education Center: FREE ($6 garage parking) | Optional Ferry: $38 Adult / $26 Child",
+        desc: "Air-conditioned National Park Service museum at Liberty Square displaying the original 1861 Fort Sumter flag and harbor views.",
+        proTip: "Kids can complete the free NPS Junior Ranger booklet in 25 minutes to earn an official badge!"
+      },
+      {
+        match: /wright brothers/i,
+        url: "https://www.nps.gov/wrbr/index.htm",
+        urlText: "NPS Wright Brothers Site",
+        badge: "ticket",
+        badgeText: "Kids 15 & Under Free",
+        adultCost: 10,
+        kidCost: 0,
+        flatCost: 0,
+        costNote: "Adults (16+): $10.00 | Children (15 & under): FREE!",
+        desc: "Walk the actual 1903 first-flight markers, climb Big Kill Devil Hill monument, and see the 1903 Flyer replica indoors.",
+        proTip: "Youth 15 and under are 100% free — a family of 2 adults + 3 kids pays just $20 total!"
+      },
+      {
+        match: /roanoke.*aquarium|nc aquarium/i,
+        url: "https://www.ncaquariums.com/roanoke-island",
+        urlText: "Book Required Timed Tickets",
+        badge: "ticket",
+        badgeText: "Advance Timed Ticket",
+        adultCost: 13,
+        kidCost: 11,
+        flatCost: 0,
+        costNote: "Online Advance Required: $12.95 Adult / $10.95 Youth (3–12)",
+        desc: "Indoor 285,000-gallon Graveyard of the Atlantic shark tank, sea turtle rescue center, and stingray touch tank.",
+        proTip: "Timed online reservations are mandatory during peak dates — book at least 5 days ahead."
+      },
+      {
+        match: /maid of the mist/i,
+        url: "https://www.maidofthemist.com/",
+        urlText: "Maid of the Mist Official Site",
+        badge: "ticket",
+        badgeText: "Iconic Boat Tour",
+        adultCost: 30,
+        kidCost: 19,
+        flatCost: 0,
+        costNote: "Admission: $30.25 Adult / $19.75 Child (6–12) | Souvenir poncho included",
+        desc: "All-electric catamaran voyage right into the mist basin of American and Horseshoe Falls.",
+        proTip: "Walk 8 minutes from the Sheraton hotel instead of driving to save the $15 State Park parking fee."
+      },
+      {
+        match: /cave of the winds/i,
+        url: "https://www.niagarafallsstatepark.com/attractions-and-tours/cave-of-the-winds",
+        urlText: "Niagara State Park Tickets",
+        badge: "ticket",
+        badgeText: "Timed Kiosk Ticket",
+        adultCost: 21,
+        kidCost: 17,
+        flatCost: 0,
+        costNote: "Admission: $21.00 Adult / $17.00 Youth (6–12)",
+        desc: "Descend 175 feet into the Niagara Gorge by elevator and walk wooden walkways beside crashing Bridal Veil Falls.",
+        proTip: "Reserve your afternoon timed ticket at the Goat Island kiosk right after finishing Maid of the Mist."
+      },
+      {
+        match: /power vista/i,
+        url: "https://www.nypa.gov/communities/visitors-centers/niagara-power-vista",
+        urlText: "NYPA Power Vista Official Site",
+        badge: "free",
+        badgeText: "100% Free STEM",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 0,
+        costNote: "Admission, 4D Theatre Ride & Parking: 100% FREE!",
+        desc: "Hands-on hydroelectric science center with a 4D virtual coaster ride, control room simulator, and 350-ft gorge deck.",
+        proTip: "Best free air-conditioned STEM attraction in Western NY for kids ages 8–13."
+      },
+      {
+        match: /ripley.*aquarium/i,
+        url: "https://www.ripleys.com/attractions/ripleys-aquarium-of-the-smokies",
+        urlText: "Ripley's Aquarium Official Tickets",
+        badge: "ticket",
+        badgeText: "Online Combo Saver",
+        adultCost: 40,
+        kidCost: 25,
+        flatCost: 10,
+        costNote: "Online Advance: ~$39.99 Adult / $24.99 Child (6–11) + $10 city garage parking",
+        desc: "Top-ranked indoor aquarium featuring a 340-foot underwater shark lagoon glidepath, penguin playhouse, and glass-bottom boat.",
+        proTip: "Perfect midday indoor shelter in downtown Gatlinburg; buy online before arrival to skip the ticket booth line."
+      },
+      {
+        match: /anakeesta/i,
+        url: "https://anakeesta.com/",
+        urlText: "Anakeesta Official Chondola Tickets",
+        badge: "ticket",
+        badgeText: "Online Timed Entry",
+        adultCost: 35,
+        kidCost: 23,
+        flatCost: 0,
+        costNote: "Online Advance: $34.99 Adult / $22.99 Child (4–11) | Includes Chondola lift",
+        desc: "Mountaintop adventure park with Chondola lift, Treetop Skywalk bridges, AnaVista Tower 360° Smokies views, and Treeventure play zones.",
+        proTip: "Book the first morning Chondola boarding window online to avoid afternoon lift queues."
+      },
+      {
+        match: /clingmans dome|kuwohi|cades cove|sugarlands/i,
+        url: "https://www.nps.gov/grsm/planyourvisit/fees.htm",
+        urlText: "Great Smoky Mtns Parking Tag Info",
+        badge: "free",
+        badgeText: "$5 Park Tag Only",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 5,
+        costNote: "National Park Entry: FREE | Required Daily Vehicle Parking Tag: $5.00 total",
+        desc: "Iconic Great Smoky Mountains National Park scenic vistas, wildlife loop road, and ranger visitor center exhibits.",
+        proTip: "One $5 daily NPS Parking Tag covers your vehicle at Cades Cove, Clingmans Dome (Kuwohi), and Sugarlands all day!"
+      },
+      {
+        match: /fort pulaski/i,
+        url: "https://www.nps.gov/fopu/index.htm",
+        urlText: "NPS Fort Pulaski Official Site",
+        badge: "ticket",
+        badgeText: "Kids 15 & Under Free",
+        adultCost: 10,
+        kidCost: 0,
+        flatCost: 0,
+        costNote: "Adults (16+): $10.00 | Children (15 & under): FREE!",
+        desc: "Massive brick Civil War fortress on Cockspur Island with moat bridges, cannon casemates, and marsh trails.",
+        proTip: "Located directly on US-80 en route to Tybee Island — pair them together so you never backtrack!"
+      },
+      {
+        match: /fort kochi|chinese fishing nets|vasco da gama/i,
+        url: "https://www.keralatourism.org/destination/fort-kochi/222",
+        urlText: "Kerala Tourism Fort Kochi Guide",
+        badge: "free",
+        badgeText: "Free Heritage Walk",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 2,
+        costNote: "Promenade & Chinese Fishing Nets: FREE (Small ₹50–₹100 tip if stepping onto net structure)",
+        desc: "Historic coastal promenade in Fort Kochi featuring iconic 14th-century cantilevered Chinese Fishing Nets, colonial bungalows, and harbor breeze.",
+        proTip: "Visit between 8:30 AM – 10:30 AM or at sunset (5:00 PM) and take the ₹4 Ro-Ro/Water Metro ferry across from Ernakulam!"
+      },
+      {
+        match: /mattancherry|dutch palace|jew town/i,
+        url: "https://www.keralatourism.org/destination/mattancherry-palace-kochi/245",
+        urlText: "Mattancherry Heritage Info",
+        badge: "ticket",
+        badgeText: "Kids Under 15 Free",
+        adultCost: 2,
+        kidCost: 0,
+        flatCost: 0,
+        costNote: "ASI Palace Entry: ₹20 (~$0.25) Adults | Children under 15: FREE (Closed Fridays & Saturdays)",
+        desc: "16th-century Portuguese/Dutch Palace featuring Kerala Hindu temple murals, royal portraits, and adjacent spice-scented Jew Town antique lanes.",
+        proTip: "Group Mattancherry and Fort Kochi in the same morning loop — they are only 2.5 km apart by tuk-tuk."
+      },
+      {
+        match: /folklore museum/i,
+        url: "https://keralafolkloremuseum.org/",
+        urlText: "Kerala Folklore Museum Site",
+        badge: "ticket",
+        badgeText: "Indoor Cultural Gem",
+        adultCost: 3,
+        kidCost: 1.5,
+        flatCost: 0,
+        costNote: "Entry: ₹200 (~$2.50) Adult / ₹100 (~$1.25) Child/Student",
+        desc: "Three-story traditional architectural treasure housing 4,000+ South Indian masks, Kathakali costumes, sculptures, and woodwork.",
+        proTip: "Ideal midday indoor stop (12:15 PM – 3:00 PM) to escape afternoon heat or monsoon showers."
+      },
+      {
+        match: /cherai beach/i,
+        url: "https://www.keralatourism.org/destination/cherai-beach-kochi/179",
+        urlText: "Cherai Beach Official Guide",
+        badge: "free",
+        badgeText: "Free Lagoon & Sea Beach",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 2,
+        costNote: "Beach Access: FREE | Parking ~₹50",
+        desc: "Golden 10-km swimmer-friendly beach on Vypin Island where the Arabian Sea meets the calm Poyil backwaters, famous for dolphin sightings.",
+        proTip: "Take the Fort Kochi–Vypin Ro-Ro ferry to save 45 minutes of city traffic!"
+      },
+      {
+        match: /subhash bose|marine drive/i,
+        url: "https://kochimunicipalcorporation.lsgkerala.gov.in/",
+        urlText: "Marine Drive & Kochi Water Metro",
+        badge: "free",
+        badgeText: "Waterfront & Play",
+        adultCost: 1,
+        kidCost: 0.5,
+        flatCost: 0,
+        costNote: "Subhash Park Entry: ₹20 Adult / ₹10 Child | Kochi Water Metro A/C Boat: ₹20–₹40",
+        desc: "Shaded harborfront park with kids' play zones, backwater bridges, and the modern air-conditioned Kochi Water Metro terminal.",
+        proTip: "Ride the electric A/C Kochi Water Metro from High Court terminal to Fort Kochi for just ₹40 per person — kids love it!"
+      },
+      {
+        match: /hill palace/i,
+        url: "https://www.keralatourism.org/destination/hill-palace-museum/182",
+        urlText: "Hill Palace Museum Guide",
+        badge: "ticket",
+        badgeText: "Royal Palace & Deer Park",
+        adultCost: 2,
+        kidCost: 1,
+        flatCost: 2,
+        costNote: "Museum + Deer Park + Children's Park: ~₹60 Adult / ₹30 Child (Closed Mondays)",
+        desc: "54-acre royal residence of the Cochin Maharaja featuring an archaeological museum, heritage gallery, deer park, and shaded kids' playground.",
+        proTip: "Visit at 9:00 AM right when gates open to explore the shaded 54-acre campus before midday humidity."
+      },
+      {
+        match: /santa cruz|basilica/i,
+        url: "https://www.keralatourism.org/destination/santa-cruz-basilica-fort-kochi/246",
+        urlText: "Santa Cruz Cathedral Basilica",
+        badge: "free",
+        badgeText: "Historic Basilica",
+        adultCost: 0,
+        kidCost: 0,
+        flatCost: 0,
+        costNote: "Free Entry",
+        desc: "Soaring 16th-century heritage cathedral basilica in Fort Kochi renowned for its pastel Gothic arches and ceiling frescoes.",
+        proTip: "Check Sunday English Mass timings if visiting on Sunday morning."
+      },
+      {
+        match: /eravikulam|rajamalai/i,
+        url: "https://eravikulamnationalpark.in/",
+        urlText: "Eravikulam National Park Tickets",
+        badge: "ticket",
+        badgeText: "Online Advance Slot",
+        adultCost: 3,
+        kidCost: 1.5,
+        flatCost: 1,
+        costNote: "Indian Entry: ₹200 (~$2.50) Adult / ₹150 (~$1.80) Child | Includes Park Eco-Bus",
+        desc: "High-altitude rolling grasslands of the Western Ghats, home to the endangered Nilgiri Tahr mountain goat and panoramic Anamudi Peak views.",
+        proTip: "Book the 8:30 AM first morning eco-bus online at eravikulamnationalpark.in to beat valley mist and queues!"
+      },
+      {
+        match: /tata tea|tea museum/i,
+        url: "https://www.keralatourism.org/destination/tata-tea-museum-munnar/367",
+        urlText: "KDHP Tata Tea Museum Guide",
+        badge: "ticket",
+        badgeText: "Indoor Tea Factory",
+        adultCost: 2,
+        kidCost: 1,
+        flatCost: 0,
+        costNote: "Admission: ₹150 (~$1.80) Adult / ₹75 (~$0.90) Child (Closed Mondays)",
+        desc: "Live colonial-era tea processing factory showcase, 1905 rail engine artifacts, Pelton wheel, and guided tea-tasting demonstration.",
+        proTip: "Perfect midday indoor shelter (12:15 PM – 3:00 PM) with fresh hot cardamom tea tastings!"
+      },
+      {
+        match: /mattupetty|echo point|top station/i,
+        url: "https://www.keralatourism.org/destination/mattupetty-munnar/145",
+        urlText: "Mattupetty & Echo Point Info",
+        badge: "ticket",
+        badgeText: "Lake Boating & Vistas",
+        adultCost: 3,
+        kidCost: 2,
+        flatCost: 1,
+        costNote: "Dam Entry: ₹10 | DTPC Speed Boat (up to 5 people): ₹700 (~$8.50 total family)",
+        desc: "Scenic mountain reservoir surrounded by shola forests and tea estates, paired with natural acoustic Echo Point along the lake shore.",
+        proTip: "One ₹700 DTPC family speed-boat ticket covers all 5 family members together!"
+      },
+      {
+        match: /cheeyappara|valara|blossom/i,
+        url: "https://www.keralatourism.org/destination/blossom-hydel-park-munnar/366",
+        urlText: "Munnar Waterfalls & Blossom Park",
+        badge: "free",
+        badgeText: "Waterfalls & Park",
+        adultCost: 1,
+        kidCost: 0.5,
+        flatCost: 1,
+        costNote: "Waterfalls: FREE | Blossom Hydel Park: ₹60 Adult / ₹30 Child",
+        desc: "Seven-tiered cascading roadside waterfalls on the climb to Munnar and 16-acre shaded mountain garden with kids' cycling, ropeway, and treehouses.",
+        proTip: "Great Day 1 afternoon stop before resort check-in so kids can stretch and play in the cool mountain breeze."
+      }
+    ];
+
+    const STATE_KEY = 'pocket_dynamic_trip_v4';
+    const CHECK_KEY = 'pocket_dynamic_checks_v4';
+    const VAULT_KEY = 'pocket_saved_trips_vault_v1';
+    const GEMINI_KEY_STORAGE = 'pocket_gemini_api_key_v1';
+
+    let activeTrip = null;
+    let activeChecks = [];
+    let lastKnownDest = '';
+
+    function formatHumanDate(dateObj) {
+      return dateObj.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+
+    function formatShortDate(dateObj) {
+      return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    function getSeasonalWeather(dateStr, dest) {
+      const d = new Date(dateStr + 'T12:00:00');
+      const m = d.getMonth();
+      const isCoastal = /charleston|beach|obx|outer banks|savannah|myrtle|wilmington|key|miami|hilton head|kochi|alappuzha|cherai/i.test(dest);
+      if (m >= 5 && m <= 7) {
+        return {
+          summary: isCoastal ? "88°F /☀️ Coastal Breeze" : "86°F /⛅ Summer Warmth",
+          heatWindow: "12:00 PM – 3:30 PM (Peak UV & Afternoon Shower Risk)",
+          outdoorTip: "Schedule beaches, decks, and open trails before 11:45 AM or after 4:00 PM.",
+          season: "summer"
+        };
+      } else if (m >= 8 && m <= 10) {
+        return {
+          summary: "74°F /🍂 Crisp Autumn",
+          heatWindow: "1:00 PM – 3:00 PM (Mild Midday Sun)",
+          outdoorTip: "Golden hour starts earlier (~5:15 PM); layer light jackets for mornings.",
+          season: "fall"
+        };
+      } else if (m === 11 || m <= 1) {
+        return {
+          summary: "58°F /🧥 Cool Winter",
+          heatWindow: "11:30 AM – 3:30 PM (Warmest Daylight Window)",
+          outdoorTip: "Prioritize midday sunshine for outdoor parks and indoor museums after 4:30 PM.",
+          season: "winter"
+        };
+      }
+      return {
+        summary: "76°F /🌤️ Pleasant Spring",
+        heatWindow: "12:30 PM – 3:00 PM (Midday UV Break)",
+        outdoorTip: "Ideal morning and late afternoon outdoor exploration windows.",
+        season: "spring"
+      };
+    }
+
+    function readFormInputs() {
+      const selectedThemes = Array.from(document.querySelectorAll('#themeChips .pref-chip.selected'))
+        .map(el => el.dataset.theme);
+
+      return {
+        origin: document.getElementById('cfgOrigin').value.trim() || 'Charlotte, NC',
+        dest: document.getElementById('cfgDest').value.trim() || 'Savannah, GA',
+        startDate: document.getElementById('cfgStart').value || '2026-07-03',
+        endDate: document.getElementById('cfgEnd').value || '2026-07-05',
+        adults: Math.max(1, parseInt(document.getElementById('cfgAdults').value, 10) || 2),
+        kids: Math.max(0, parseInt(document.getElementById('cfgKids').value, 10) || 0),
+        ages: document.getElementById('cfgAges').value.trim() || '8, 10, 13',
+        pace: document.getElementById('cfgPace').value || 'balanced',
+        transport: document.getElementById('cfgTransport').value || 'road',
+        budget: document.getElementById('cfgBudget').value || 'cost-effective',
+        hotel: document.getElementById('cfgHotel').value.trim() || 'Base Family Hotel',
+        day1Food: document.getElementById('cfgDay1Food').value.trim(),
+        mustSees: document.getElementById('cfgMustSees').value.trim(),
+        constraints: document.getElementById('cfgConstraints').value.trim() || 'Optimize route to prevent backtracking',
+        themes: selectedThemes
+      };
+    }
+
+    function populateFormInputs(cfg) {
+      document.getElementById('cfgOrigin').value = cfg.origin;
+      document.getElementById('cfgDest').value = cfg.dest;
+      document.getElementById('cfgStart').value = cfg.startDate;
+      document.getElementById('cfgEnd').value = cfg.endDate;
+      document.getElementById('cfgAdults').value = cfg.adults;
+      document.getElementById('cfgKids').value = cfg.kids;
+      document.getElementById('cfgAges').value = cfg.ages;
+      document.getElementById('cfgPace').value = cfg.pace;
+      document.getElementById('cfgTransport').value = cfg.transport;
+      document.getElementById('cfgBudget').value = cfg.budget;
+      document.getElementById('cfgHotel').value = cfg.hotel;
+      document.getElementById('cfgDay1Food').value = cfg.day1Food || '';
+      document.getElementById('cfgMustSees').value = cfg.mustSees || '';
+      document.getElementById('cfgConstraints').value = cfg.constraints || '';
+
+      document.querySelectorAll('#themeChips .pref-chip').forEach(chip => {
+        if ((cfg.themes || []).includes(chip.dataset.theme)) {
+          chip.classList.add('selected');
+        } else {
+          chip.classList.remove('selected');
+        }
+      });
+    }
+
+    // ==================== CONSTRAINT-AWARE OFFLINE ROUTE SYNTHESIZER ====================
+    function synthesizeTripFromInputs(cfg) {
+      const sDate = new Date(cfg.startDate + 'T12:00:00');
+      const eDate = new Date(cfg.endDate + 'T12:00:00');
+      let numDays = Math.round((eDate - sDate) / (1000 * 60 * 60 * 24)) + 1;
+      if (isNaN(numDays) || numDays < 1) numDays = 1;
+      if (numDays > 14) numDays = 14;
+
+      const destShort = cfg.dest.split(',')[0].trim();
+      const weatherInfo = getSeasonalWeather(cfg.startDate, cfg.dest);
+
+      // Parse exclusions from constraints (e.g., "Exclude Folly Beach, City Market")
+      const exclusionWords = [];
+      const exclMatch = (cfg.constraints || '').match(/exclude[:\s]+([^.;]+)/i);
+      if (exclMatch && exclMatch[1]) {
+        exclMatch[1].split(',').forEach(w => {
+          const cl = w.trim().toLowerCase();
+          if (cl.length > 2) exclusionWords.push(cl);
+        });
+      }
+
+      // Filter must-sees against any explicit exclusions
+      const mustSeeQueue = (cfg.mustSees ? cfg.mustSees.split(',') : [])
+        .map(s => s.trim())
+        .filter(Boolean)
+        .filter(item => !exclusionWords.some(ex => item.toLowerCase().includes(ex)));
+
+      let mustSeeIdx = 0;
+      function pullNextActivity(fallbackTitle, fallbackSearch, defaultBadge, defaultAdult, defaultKid, defaultFlat, defaultDesc) {
+        if (mustSeeIdx < mustSeeQueue.length) {
+          const customPlace = mustSeeQueue[mustSeeIdx++];
+          const kbHit = REAL_PLACE_KB.find(k => k.match.test(customPlace));
+          if (kbHit) {
+            return {
+              title: customPlace,
+              mapSearch: `${customPlace}, ${cfg.dest}`,
+              url: kbHit.url,
+              urlText: kbHit.urlText,
+              badge: kbHit.badge,
+              badgeText: kbHit.badgeText,
+              adultCost: kbHit.adultCost,
+              kidCost: kbHit.kidCost,
+              flatCost: kbHit.flatCost,
+              costNote: kbHit.costNote,
+              desc: kbHit.desc,
+              proTip: kbHit.proTip
+            };
+          }
+          const isFree = /park|beach|playground|walk|free|visitor center|dunes|overlook|basilica|cathedral|loop/i.test(customPlace);
+          return {
+            title: customPlace,
+            mapSearch: `${customPlace}, ${cfg.dest}`,
+            url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(customPlace + ', ' + cfg.dest)}`,
+            urlText: "Official Attraction & Map Info",
+            badge: isFree ? 'free' : defaultBadge,
+            badgeText: isFree ? 'Free / Low-Cost' : (defaultBadge === 'ticket' ? 'Advance Ticket' : 'Featured Stop'),
+            adultCost: isFree ? 0 : defaultAdult,
+            kidCost: isFree ? 0 : defaultKid,
+            flatCost: isFree ? (cfg.budget === 'cost-effective' ? 0 : 10) : defaultFlat,
+            costNote: null,
+            desc: `Explore ${customPlace} in ${destShort}, tailored for ${cfg.adults} adults and ${cfg.kids} kids (ages ${cfg.ages}).`,
+            proTip: null
+          };
+        }
+        return {
+          title: fallbackTitle,
+          mapSearch: `${fallbackSearch}, ${cfg.dest}`,
+          url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fallbackSearch + ', ' + cfg.dest)}`,
+          urlText: "Official Site & Tickets",
+          badge: defaultBadge,
+          badgeText: defaultBadge === 'free' ? 'Free / Park' : (defaultBadge === 'ticket' ? 'Ticket Required' : 'Activity'),
+          adultCost: defaultAdult,
+          kidCost: defaultKid,
+          flatCost: defaultFlat,
+          costNote: null,
+          desc: defaultDesc,
+          proTip: null
+        };
+      }
+
+      const budgetMultiplier = cfg.budget === 'premium' ? 1.6 : (cfg.budget === 'moderate' ? 1.25 : 1.0);
+      const mealAdult = Math.round(14 * budgetMultiplier);
+      const mealKid = Math.round(9 * budgetMultiplier);
+
+      const days = [];
+
+      for (let dIdx = 0; dIdx < numDays; dIdx++) {
+        const dayNum = dIdx + 1;
+        const curDate = new Date(sDate);
+        curDate.setDate(sDate.getDate() + dIdx);
+        const dateStr = formatHumanDate(curDate);
+        const isFirstDay = (dayNum === 1);
+        const isLastDay = (dayNum === numDays && numDays > 1);
+        const isSunday = (curDate.getDay() === 0);
+        const isJuly4 = (curDate.getMonth() === 6 && curDate.getDate() === 4);
+
+        const blocks = [];
+        const routeStops = [];
+
+        if (isFirstDay) {
+          routeStops.push(cfg.origin);
+          const transitLabel = cfg.transport === 'flight'
+            ? `✈️ Flight & Airport Transfer: ${cfg.origin} → ${destShort}`
+            : `🚗 Morning Departure: ${cfg.origin} → ${destShort}`;
+          const transitCostFlat = cfg.transport === 'flight' ? 0 : 38;
+          const transitAdult = cfg.transport === 'flight' ? 140 : 0;
+          const transitKid = cfg.transport === 'flight' ? 120 : 0;
+
+          blocks.push({
+            code: `Day 1 • Block 1`,
+            time: "9:15 AM – 12:30 PM",
+            title: transitLabel,
+            badge: "drive",
+            badgeText: cfg.transport === 'flight' ? "Flight Leg" : "Drive Time",
+            fromTo: `${cfg.origin} → ${cfg.dest} (Morning transit window)`,
+            url: `https://www.google.com/maps/dir/${encodeURIComponent(cfg.origin)}/${encodeURIComponent(cfg.dest)}`,
+            urlText: "Live Route & Traffic Map",
+            mapSearch: `${cfg.origin} to ${cfg.dest}`,
+            adultCost: transitAdult,
+            kidCost: transitKid,
+            flatCost: transitCostFlat,
+            costNote: cfg.transport === 'flight' ? "Airfare + local transit" : `Est. ~$${transitCostFlat} highway fuel leg`,
+            activities: `Morning departure from ${cfg.origin} heading to ${cfg.dest}. Timed to arrive right for lunch and afternoon check-in gap play.`,
+            food: "Pack cooler with cold drinks, fruit, and road snacks from home ($0).",
+            weatherAlt: "Adjust highway speed for rain; track live radar.",
+            proTip: "Pack swimsuits/play gear in a small top bag in the trunk so you can enjoy a park or beach stop before hotel check-in!",
+            nextLeg: `🚗 Arrive at Day 1 Lunch Stop [Day 1 • Leg 1]`
+          });
+
+          const lunchName = cfg.day1Food || `${destShort} Local Family Cafe & Sandwich Spot`;
+          const lunchMap = cfg.day1Food ? `${cfg.day1Food}, ${cfg.dest}` : `Family friendly lunch restaurant, ${cfg.dest}`;
+          routeStops.push(lunchMap);
+
+          blocks.push({
+            code: `Day 1 • Block 2`,
+            time: "12:40 PM – 1:55 PM",
+            title: `🍔 Arrival Lunch: ${lunchName}`,
+            badge: "food",
+            badgeText: "Food Stop",
+            fromTo: "Arrive 12:40 PM • Depart 1:55 PM (1h 15m spent)",
+            url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lunchMap)}`,
+            urlText: "View Restaurant & Menu on Maps",
+            mapSearch: lunchMap,
+            adultCost: mealAdult,
+            kidCost: mealKid,
+            flatCost: 0,
+            costNote: `Casual family lunch (~$${mealAdult}/adult, ~$${mealKid}/child)`,
+            activities: `Refuel after the morning drive at ${lunchName}. Relaxed air-conditioned seating during early afternoon warmth.`,
+            food: "Shareable baskets, kids' meals, and cold shakes/drinks.",
+            weatherAlt: "100% indoor air-conditioned dining.",
+            proTip: "Use restrooms and refill insulated water bottles before heading to the check-in gap activity.",
+            nextLeg: `🚗 12m drive to Check-In Gap Activity [Day 1 • Leg 2]`
+          });
+
+          if (cfg.pace !== 'relaxed') {
+            const gapStop = pullNextActivity(
+              cfg.themes.includes('parks') ? `${destShort} County Splash & Shaded Park` : `${destShort} Welcome Waterfront Park`,
+              cfg.themes.includes('parks') ? `County Park Splash Pad Playground` : `Waterfront Park`,
+              "free",
+              2,
+              2,
+              0,
+              `Low-cost shaded park & play session to let the kids (ages ${cfg.ages}) burn energy after the drive while waiting for hotel check-in.`
+            );
+            routeStops.push(gapStop.mapSearch);
+
+            blocks.push({
+              code: `Day 1 • Block 3`,
+              time: "2:10 PM – 3:30 PM",
+              title: `🌳 ${gapStop.title} (Check-In Gap Filler)`,
+              badge: gapStop.badge,
+              badgeText: gapStop.badgeText,
+              fromTo: "2:10 PM – 3:30 PM (1h 20m check-in gap buffer)",
+              url: gapStop.url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(gapStop.mapSearch)}`,
+              urlText: gapStop.urlText || "Official Park / Attraction Info",
+              mapSearch: gapStop.mapSearch,
+              adultCost: gapStop.adultCost,
+              kidCost: gapStop.kidCost,
+              flatCost: gapStop.flatCost,
+              costNote: gapStop.costNote || (gapStop.adultCost === 0 && gapStop.flatCost === 0 ? "Free Public Access" : `Online vs Onsite: ~$${gapStop.adultCost}/person`),
+              activities: gapStop.desc,
+              food: "Hydration break with packed cooler snacks.",
+              weatherAlt: `If afternoon storm hits, head straight to ${cfg.hotel.split(',')[0]} lobby/indoor amenities.`,
+              proTip: gapStop.proTip || "Bridges the gap between lunch and 3:30/4:00 PM hotel check-in with zero wasted downtime.",
+              nextLeg: `🚗 10m drive to Base Hotel Check-In [Day 1 • Leg 3]`
+            });
+          }
+
+          routeStops.push(cfg.hotel);
+          blocks.push({
+            code: `Day 1 • Block ${blocks.length + 1}`,
+            time: "3:40 PM – 5:15 PM",
+            title: `🏨 Check-In & A/C Recharge: ${cfg.hotel.split(',')[0]}`,
+            badge: "free",
+            badgeText: "Base Camp",
+            fromTo: "3:40 PM Check-In • Rest until 5:15 PM",
+            url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cfg.hotel)}`,
+            urlText: "Hotel Property Details",
+            mapSearch: cfg.hotel,
+            adultCost: 0,
+            kidCost: 0,
+            flatCost: 0,
+            costNote: `Included in lodging (${cfg.constraints})`,
+            activities: "Unpack luggage into the suite, cool down in A/C during peak late-afternoon heat, and refresh for the evening.",
+            food: "Complimentary lobby water/coffee & kids' snack break.",
+            weatherAlt: "Indoor hotel rest & pool window.",
+            proTip: "Ask the front desk about breakfast hours and late checkout options for departure day.",
+            nextLeg: `🚗 12m drive to Evening Exploration & Dinner [Day 1 • Leg ${blocks.length + 1}]`
+          });
+
+          const eveTitle = cfg.themes.includes('parks')
+            ? `🛝 ${destShort} Inclusive Evening Playground & Local Dinner`
+            : `🌅 ${destShort} Golden Hour Stroll & Welcome Dinner`;
+          const eveSearch = cfg.themes.includes('localfood')
+            ? `Family Pizzeria and Playground, ${cfg.dest}`
+            : `Downtown Historic District Dinner, ${cfg.dest}`;
+          routeStops.push(eveSearch);
+
+          blocks.push({
+            code: `Day 1 • Block ${blocks.length + 1}`,
+            time: "5:30 PM – 8:00 PM",
+            title: eveTitle,
+            badge: "food",
+            badgeText: "Golden Hour + Dinner",
+            fromTo: "5:30 PM Evening Walk/Play • 6:30 PM Family Dinner",
+            url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(eveSearch)}`,
+            urlText: "Explore Dining & Park District",
+            mapSearch: eveSearch,
+            adultCost: mealAdult + 4,
+            kidCost: mealKid + 2,
+            flatCost: 0,
+            costNote: "Evening Park/Walk: FREE | Family-style dinner budget",
+            activities: `Enjoy cooler golden-hour temperatures in ${destShort} followed by a relaxed sit-down family dinner with zero highway backtracking.`,
+            food: cfg.themes.includes('localfood') ? "Shareable wood-fired pizzas or local coastal seafood baskets." : "Family-friendly local sit-down restaurant with kids' menu.",
+            weatherAlt: "Dine indoors and enjoy board games or indoor pool back at the hotel.",
+            proTip: "Park once in a central spot where the park/walk and restaurant are within 2 blocks of each other.",
+            nextLeg: `🚗 15m return drive to ${cfg.hotel.split(',')[0]} [Day 1 • Final Leg]`
+          });
+
+        } else if (isLastDay) {
+          routeStops.push(cfg.hotel);
+
+          if (isSunday && cfg.themes.includes('mass')) {
+            const massSearch = `Catholic Church English Mass near ${cfg.hotel}`;
+            routeStops.push(massSearch);
+            blocks.push({
+              code: `Day ${dayNum} • Block 1`,
+              time: "10:00 AM – 11:15 AM",
+              title: `⛪ Sunday Morning English Catholic Mass`,
+              badge: "free",
+              badgeText: "Sunday Mass",
+              fromTo: "Sleep in • Hotel Breakfast • 10:00 AM Local Parish Mass",
+              url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(massSearch)}`,
+              urlText: "Find Nearby Parish & Mass Times",
+              mapSearch: massSearch,
+              adultCost: 0,
+              kidCost: 0,
+              flatCost: 0,
+              costNote: "Free",
+              activities: `Attend Sunday morning English Catholic Mass near ${destShort} after enjoying hotel breakfast and packing up the car.`,
+              food: "Complimentary hotel breakfast prior to checkout.",
+              weatherAlt: "Indoor church service.",
+              proTip: "Load all suitcases into the vehicle before Mass so you can head straight to your final morning attraction.",
+              nextLeg: `🚗 15m drive to Morning Finale Stop [Day ${dayNum} • Leg 1]`
+            });
+          }
+
+          const finaleStop = pullNextActivity(
+            `${destShort} Visitor Center & Scenic Overlook`,
+            `National Park Visitor Center or Historic Site`,
+            "free",
+            0,
+            0,
+            6,
+            `Final morning exploration in ${destShort} timed before midday heat and highway return.`
+          );
+          routeStops.push(finaleStop.mapSearch);
+
+          blocks.push({
+            code: `Day ${dayNum} • Block ${blocks.length + 1}`,
+            time: isSunday && cfg.themes.includes('mass') ? "11:30 AM – 1:30 PM" : "9:30 AM – 12:00 PM",
+            title: `🏛️ ${finaleStop.title}`,
+            badge: finaleStop.badge,
+            badgeText: finaleStop.badgeText,
+            fromTo: "Morning Finale Visit (2.0h spent before departure)",
+            url: finaleStop.url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(finaleStop.mapSearch)}`,
+            urlText: finaleStop.urlText || "Official Attraction & Ticket Link",
+            mapSearch: finaleStop.mapSearch,
+            adultCost: finaleStop.adultCost,
+            kidCost: finaleStop.kidCost,
+            flatCost: finaleStop.flatCost,
+            costNote: finaleStop.costNote || (finaleStop.adultCost === 0 ? `Free Entry (Est. $${finaleStop.flatCost} parking)` : `Online Advance: $${finaleStop.adultCost} Adult / $${finaleStop.kidCost} Kid`),
+            activities: finaleStop.desc,
+            food: "Grab quick fast-casual lunch nearby before hitting the highway.",
+            weatherAlt: "Focus on the indoor museum exhibits and visitor center theater.",
+            proTip: finaleStop.proTip || "Ask at the front desk if they offer free kids' Junior Ranger or souvenir activity booklets!",
+            nextLeg: `🚗 Depart for ${cfg.origin} [Day ${dayNum} • Leg ${blocks.length + 1}]`
+          });
+
+          routeStops.push(cfg.origin);
+          const returnCostFlat = cfg.transport === 'flight' ? 0 : 38;
+          blocks.push({
+            code: `Day ${dayNum} • Block ${blocks.length + 1}`,
+            time: "2:00 PM – 5:30 PM",
+            title: cfg.transport === 'flight' ? `✈️ Return Flight to ${cfg.origin}` : `🚗 Return Drive: ${destShort} → ${cfg.origin}`,
+            badge: "drive",
+            badgeText: "Return Transit",
+            fromTo: `${cfg.dest} → ${cfg.origin}`,
+            url: `https://www.google.com/maps/dir/${encodeURIComponent(cfg.dest)}/${encodeURIComponent(cfg.origin)}`,
+            urlText: "Live Return Highway Route",
+            mapSearch: `${cfg.dest} to ${cfg.origin}`,
+            adultCost: mealAdult,
+            kidCost: mealKid,
+            flatCost: returnCostFlat,
+            costNote: `Return fuel (~$${returnCostFlat}) + highway dinner/lunch stop`,
+            activities: `Smooth afternoon return journey from ${destShort} back to ${cfg.origin}.`,
+            food: "Midway highway stretch & fast-casual family meal.",
+            weatherAlt: "Check live traffic along interstate corridor.",
+            proTip: "Fill up gas tank before getting on the main interstate highway for best per-gallon prices.",
+            nextLeg: `🏠 Arrive Home in ${cfg.origin} [Trip Complete]`
+          });
+
+        } else {
+          routeStops.push(cfg.hotel);
+
+          const mornFallbackTitle = cfg.themes.includes('history')
+            ? `${destShort} Historic Landmark & Maritime/Heritage Tour`
+            : (cfg.themes.includes('nature') ? `${destShort} Morning State Park Trail & Overlook` : `${destShort} Signature Morning Adventure`);
+          const mornFallbackSearch = cfg.themes.includes('history') ? `Historic Landmark Museum` : `State Park Visitor Center`;
+
+          const mornStop = pullNextActivity(
+            mornFallbackTitle,
+            mornFallbackSearch,
+            "ticket",
+            Math.round(24 * budgetMultiplier),
+            Math.round(16 * budgetMultiplier),
+            10,
+            `Beat the midday heat and tour crowds during the coolest morning window (8:45 AM – 12:00 PM) in ${destShort}.`
+          );
+          routeStops.push(mornStop.mapSearch);
+
+          blocks.push({
+            code: `Day ${dayNum} • Block 1`,
+            time: "8:45 AM – 12:00 PM",
+            title: `⚓ ${mornStop.title}`,
+            badge: mornStop.badge,
+            badgeText: mornStop.badgeText,
+            fromTo: `Depart Hotel 8:15 AM • Explore 8:45 AM – 12:00 PM (Coolest Morning Slot)`,
+            url: mornStop.url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mornStop.mapSearch)}`,
+            urlText: mornStop.urlText || "Buy Online Advance Tickets",
+            mapSearch: mornStop.mapSearch,
+            adultCost: mornStop.adultCost,
+            kidCost: mornStop.kidCost,
+            flatCost: mornStop.flatCost,
+            costNote: mornStop.costNote || (mornStop.adultCost > 0
+              ? `Online Advance: $${mornStop.adultCost}/Adult, $${mornStop.kidCost}/Kid (Saves ~$3/ticket vs Onsite) + $${mornStop.flatCost} Parking`
+              : `Free Admission (Est. $${mornStop.flatCost} parking)`),
+            activities: mornStop.desc,
+            food: "Eat free hot breakfast at hotel before departing; pack morning water bottles.",
+            weatherAlt: "Move to covered indoor exhibit halls if morning rain passes through.",
+            proTip: mornStop.proTip || "Arrive within 15 minutes of opening to park closest to the entrance and complete outdoor decks before 11:30 AM UV peak.",
+            nextLeg: `🚗 12m drive to Midday A/C Lunch & Heat Buffer [Day ${dayNum} • Leg 1]`
+          });
+
+          const indoorTitle = cfg.themes.includes('science')
+            ? `🦈 ${destShort} Aquarium / Interactive STEM Center & Lunch (A/C Buffer)`
+            : `❄️ ${destShort} Midday A/C Lunch & Shaded Indoor Discovery (Peak Heat Buffer)`;
+          const indoorSearch = cfg.themes.includes('science')
+            ? `Aquarium or Science Museum, ${cfg.dest}`
+            : `Indoor Market and Family Lunch, ${cfg.dest}`;
+          routeStops.push(indoorSearch);
+
+          const indoorAdult = cfg.themes.includes('science') ? Math.round(22 * budgetMultiplier) : mealAdult;
+          const indoorKid = cfg.themes.includes('science') ? Math.round(15 * budgetMultiplier) : mealKid;
+
+          blocks.push({
+            code: `Day ${dayNum} • Block 2`,
+            time: "12:15 PM – 3:15 PM",
+            title: indoorTitle,
+            badge: cfg.themes.includes('science') ? "ticket" : "food",
+            badgeText: "Peak Heat A/C Buffer",
+            fromTo: "12:15 PM – 3:15 PM (Scheduled during 12–3:30 PM peak heat/storm window)",
+            url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(indoorSearch)}`,
+            urlText: "View Indoor Venue & Hours",
+            mapSearch: indoorSearch,
+            adultCost: indoorAdult,
+            kidCost: indoorKid,
+            flatCost: 0,
+            costNote: cfg.themes.includes('science')
+              ? `Timed Online Entry + Fast-Casual Lunch`
+              : `Air-Conditioned Family Lunch (~$${indoorAdult}/adult, ~$${indoorKid}/kid)`,
+            activities: `Stay in the same geographic zone (zero bridge/highway backtracking!) inside full air-conditioning while outdoor temperatures peak.`,
+            food: "Kids' menu combos or family-style shareable lunch platters.",
+            weatherAlt: "100% climate-controlled indoor block — completely immune to afternoon heat or summer thunderstorms.",
+            proTip: "Scheduling indoor venues from 12:15–3:15 PM keeps everyone energized for late-afternoon outdoor fun.",
+            nextLeg: `🚗 15m drive to Late-Afternoon Cooler Window [Day ${dayNum} • Leg 2]`
+          });
+
+          if (cfg.pace !== 'relaxed') {
+            const aftFallbackTitle = cfg.themes.includes('beach')
+              ? `${destShort} Ocean Beach & Dunes Session (Cooler Sun Window)`
+              : `${destShort} Scenic Waterfront Boardwalk & Shaded Park`;
+            const aftFallbackSearch = cfg.themes.includes('beach') ? `County Beach Park` : `Waterfront Boardwalk Park`;
+
+            const aftStop = pullNextActivity(
+              aftFallbackTitle,
+              aftFallbackSearch,
+              "free",
+              0,
+              0,
+              12,
+              `Enjoy 2 hours of late-afternoon coastal breeze or scenic park trails once peak UV drops after 3:30 PM.`
+            );
+            routeStops.push(aftStop.mapSearch);
+
+            blocks.push({
+              code: `Day ${dayNum} • Block 3`,
+              time: "3:30 PM – 5:45 PM",
+              title: `🏖️ ${aftStop.title}`,
+              badge: aftStop.badge,
+              badgeText: aftStop.badgeText,
+              fromTo: "3:30 PM – 5:45 PM (2h 15m late-afternoon breeze slot)",
+              url: aftStop.url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(aftStop.mapSearch)}`,
+              urlText: aftStop.urlText || "Park & Beach Access Guide",
+              mapSearch: aftStop.mapSearch,
+              adultCost: aftStop.adultCost,
+              kidCost: aftStop.kidCost,
+              flatCost: aftStop.flatCost,
+              costNote: aftStop.costNote || (aftStop.adultCost === 0 ? `Free Entry (Est. $${aftStop.flatCost} vehicle parking)` : `Admission: $${aftStop.adultCost}/adult`),
+              activities: aftStop.desc,
+              food: "Cold ice cream, slushies, or fruit snacks at the pavilion.",
+              weatherAlt: "Return to hotel indoor pool or visit a covered historic market.",
+              proTip: aftStop.proTip || "Arriving at 3:30 PM lets you snag prime parking spots right as the morning crowd departs!",
+              nextLeg: `🚗 20m drive to Evening Dinner & Night Finale [Day ${dayNum} • Leg 3]`
+            });
+          }
+
+          const wantIndian = cfg.themes.includes('indian') && (dayNum === 2 || numDays === 2);
+          const wantFireworks = cfg.themes.includes('fireworks') || isJuly4;
+
+          const dinnerTitle = wantIndian
+            ? `🍛 Authentic Indian Family Dinner${wantFireworks ? ' & Evening Fireworks Show' : ''}`
+            : `🍽️ ${destShort} Local Family Dinner${wantFireworks ? ' & Nighttime Illumination/Fireworks' : ''}`;
+          const dinnerSearch = wantIndian
+            ? `Best Indian Restaurant in ${cfg.dest}`
+            : `Family Friendly Local Restaurant in ${cfg.dest}`;
+          routeStops.push(dinnerSearch);
+
+          blocks.push({
+            code: `Day ${dayNum} • Block ${blocks.length + 1}`,
+            time: "6:15 PM – 9:00 PM",
+            title: dinnerTitle,
+            badge: "food",
+            badgeText: wantFireworks ? "Dinner + Fireworks" : "Evening Dinner",
+            fromTo: "6:15 PM Dinner • 7:45 PM Evening Waterfront Walk / Finale",
+            url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dinnerSearch)}`,
+            urlText: "Top-Rated Local Dining Map",
+            mapSearch: dinnerSearch,
+            adultCost: mealAdult + 5,
+            kidCost: mealKid + 3,
+            flatCost: 0,
+            costNote: wantIndian
+              ? "Family-style Indian curries, garlic naan & biryani | Evening event: FREE"
+              : "Local sit-down dinner | Evening walk/show: FREE",
+            activities: wantIndian
+              ? `Enjoy a flavorful family-style Indian dinner in ${destShort}${wantFireworks ? ', followed by free community fireworks and waterfront illuminations without downtown traffic gridlock.' : '.'}`
+              : `Relaxed evening dinner in ${destShort}${wantFireworks ? ' followed by evening fireworks and sunset views.' : '.'}`,
+            food: wantIndian ? "Butter chicken, paneer tikka, garlic naan baskets, and mango lassi." : "Regional specialties + kids' favorites.",
+            weatherAlt: "Indoor restaurant seating; watch illuminations from covered pavilion.",
+            proTip: wantIndian ? "Ordering family-style curries and shared rice/naan baskets stretches your dining budget by ~25%." : "Call 30 minutes ahead to put your family name on the waitlist before arriving.",
+            nextLeg: `🚗 15m drive back to ${cfg.hotel.split(',')[0]} [Day ${dayNum} • Final Leg]`
+          });
+
+          if (cfg.pace === 'packed') {
+            const nightSearch = `Evening Boardwalk Ice Cream and Promenade, ${cfg.dest}`;
+            routeStops.push(nightSearch);
+            blocks.push({
+              code: `Day ${dayNum} • Block ${blocks.length + 1}`,
+              time: "8:45 PM – 9:45 PM",
+              title: `🍨 Action-Packed Bonus: Nighttime Promenade Dessert & Walk`,
+              badge: "free",
+              badgeText: "Bonus Night Block",
+              fromTo: "8:45 PM – 9:45 PM (1.0h evening family fun)",
+              url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nightSearch)}`,
+              urlText: "View Evening Spot",
+              mapSearch: nightSearch,
+              adultCost: 6,
+              kidCost: 8,
+              flatCost: 0,
+              costNote: "Optional dessert & evening treats",
+              activities: `Extra evening family activity added for your Action-Packed pace setting in ${destShort}.`,
+              food: "Local homemade ice cream scoops or shakes.",
+              weatherAlt: "Indoor game room or hotel suite lounge.",
+              proTip: "Great way to wrap up a high-energy day before returning to the hotel.",
+              nextLeg: `🚗 Return to hotel for sleep [Day ${dayNum} • Night Leg]`
+            });
+          }
+        }
+
+        days.push({
+          dayNum,
+          dateStr,
+          theme: isFirstDay
+            ? `Arrival from ${cfg.origin.split(',')[0]}, Check-In Gap Play & Welcome Dinner`
+            : (isLastDay ? `Morning Finale${isSunday && cfg.themes.includes('mass') ? ', Sunday Mass' : ''} & Return to ${cfg.origin.split(',')[0]}` : `Geo-Clustered Morning Landmark, Midday A/C Buffer & Golden Hour`),
+          routeStops,
+          blocks
+        });
+      }
+
+      return {
+        ...cfg,
+        title: `${destShort} Family Trip`,
+        weatherInfo,
+        days
+      };
+    }
+
+    // ==================== DYNAMIC CHECKLIST SYNTHESIZER ====================
+    function synthesizeChecklistFromInputs(cfg, weatherInfo) {
+      const items = [
+        { id: 'pre1', cat: '1. Pre-Trip & Cost-Optimization Tasks', text: `Book online advance timed tickets for ${cfg.dest.split(',')[0]} attractions (saves vs. walk-up price)` },
+        { id: 'pre2', cat: '1. Pre-Trip & Cost-Optimization Tasks', text: `Recheck 5-day weather radar for ${cfg.dest} (${weatherInfo.summary})` },
+        { id: 'pre3', cat: '1. Pre-Trip & Cost-Optimization Tasks', text: `Confirm check-in rules at ${cfg.hotel.split(',')[0]} (${cfg.constraints.slice(0, 50)})` }
+      ];
+
+      if (cfg.transport === 'road' || cfg.transport === 'rental') {
+        items.push(
+          { id: 'tr1', cat: '2. Road Trip & Trunk Gap-Bag', text: `Pack separate top trunk day-bag for Day 1 Check-In Gap stop (before hotel check-in)` },
+          { id: 'tr2', cat: '2. Road Trip & Trunk Gap-Bag', text: `Cooler with ice packs, refillable water bottles, and car snacks from ${cfg.origin.split(',')[0]}` },
+          { id: 'tr3', cat: '2. Road Trip & Trunk Gap-Bag', text: `Download offline Google Maps zone from ${cfg.origin.split(',')[0]} to ${cfg.dest.split(',')[0]}` }
+        );
+      } else {
+        items.push(
+          { id: 'tr1', cat: '2. Flight & Transit Readiness', text: `Download mobile boarding passes & check carry-on liquid sizes for ${cfg.adults + cfg.kids} travelers` },
+          { id: 'tr2', cat: '2. Flight & Transit Readiness', text: `Pack empty insulated water bottles to fill after airport security` }
+        );
+      }
+
+      if (cfg.themes.includes('beach') || cfg.themes.includes('parks')) {
+        items.push(
+          { id: 'th1', cat: '3. Theme & Activity Gear', text: `Quick-dry towels, swimsuits, flip-flops & change of clothes for splash/beach blocks` },
+          { id: 'th2', cat: '3. Theme & Activity Gear', text: `Reef-safe SPF 50 sunscreen, wide-brim hats & polarized sunglasses (for 12–3:30 PM UV)` }
+        );
+      }
+
+      if (cfg.themes.includes('fireworks')) {
+        items.push(
+          { id: 'th3', cat: '3. Theme & Activity Gear', text: `Foldable lawn chairs or waterproof picnic blanket for evening fireworks lawn seating` }
+        );
+      }
+
+      if (cfg.themes.includes('mass')) {
+        items.push(
+          { id: 'th4', cat: '3. Theme & Activity Gear', text: `Sunday morning church attire packed near top of suitcase for easy Sunday checkout` }
+        );
+      }
+
+      if (cfg.kids > 0) {
+        items.push(
+          { id: 'kd1', cat: `4. Kids Readiness (${cfg.kids} Kids • Ages ${cfg.ages})`, text: `Multi-port USB car/wall charger, headphones & downloaded shows/audiobooks` },
+          { id: 'kd2', cat: `4. Kids Readiness (${cfg.kids} Kids • Ages ${cfg.ages})`, text: `First-aid pouch (band-aids, motion sickness bands, kids' pain reliever, wet wipes)` }
+        );
+      }
+
+      items.push(
+        { id: 'wx1', cat: '5. Weather Contingency Gear', text: `Compact rain ponchos / travel umbrellas for afternoon showers` }
+      );
+
+      return items.map(i => ({ ...i, done: false }));
+    }
+
+    // ==================== SYNCHRONIZED AI PROMPT BUILDER (WITH STRICT JSON SCHEMA) ====================
+    function buildPromptString(trip) {
+      const themeNames = Array.from(document.querySelectorAll('#themeChips .pref-chip.selected'))
+        .map(el => el.textContent.trim()).join(', ');
+
+      return `ORIGIN CITY: [${trip.origin}]
+DESTINATION: [${trip.dest}]
+DAY 1 EATING STOP: [${trip.day1Food || 'Local Family Lunch Spot'}]
+LODGING: [${trip.hotel}]
+TRIP DATES: [${trip.startDate} to ${trip.endDate}]
+TRAVEL PARTY: [${trip.adults} adults, ${trip.kids} children (ages ${trip.ages})]
+DAILY PACE: [${trip.pace.toUpperCase()}]
+TRANSPORTATION: [${trip.transport.toUpperCase()}]
+BUDGET PRIORITY: [${trip.budget}]
+MUST-SEE ATTRACTIONS: [${trip.mustSees || 'Top family-friendly landmarks & parks'}]
+KEY THEMES / MUST-DOs: [${themeNames}]
+CONSTRAINTS & EXCLUSIONS: [${trip.constraints}]
+
+---
+Act as an elite travel logistics architect. Generate a weather-aware, cost-optimized, zero-backtracking ${trip.days.length}-day itinerary from ${trip.origin} to ${trip.dest}, based at ${trip.hotel}, for ${trip.adults} adults and ${trip.kids} children (ages ${trip.ages}), covering ${trip.startDate} to ${trip.endDate}.
+1. Map outdoor blocks to coolest morning (8:45–11:45 AM) or late-afternoon (3:30–6:00 PM) windows and schedule an indoor A/C buffer during peak heat (12:00–3:15 PM).
+2. Compare online advance pricing vs. onsite walk-up pricing and provide per-person adultCost, kidCost, and flatCost (parking/fuel) in USD.
+3. Sequence stops geographically by neighborhood cluster so there is zero backtracking.
+4. Respect all check-in constraints and exclusions (${trip.constraints}).
+
+Respond ONLY with valid JSON matching this exact schema (no markdown code fences):
+{
+  "days": [
+    {
+      "dayNum": 1,
+      "dateStr": "Friday, August 6, 2026",
+      "theme": "Day summary theme",
+      "routeStops": ["${trip.origin}", "Stop 1, ${trip.dest}", "${trip.hotel}"],
+      "blocks": [
+        {
+          "code": "Day 1 • Block 1",
+          "time": "9:00 AM – 12:30 PM",
+          "title": "Activity Title",
+          "badge": "ticket",
+          "badgeText": "Online Advance",
+          "fromTo": "Depart / Arrive / Time Spent",
+          "url": "https://official-site-or-google-maps-url",
+          "urlText": "Official Website",
+          "mapSearch": "Exact Place Name, ${trip.dest}",
+          "adultCost": 20,
+          "kidCost": 12,
+          "flatCost": 5,
+          "costNote": "Online $20 Adult / $12 Kid vs Onsite $25 + $5 parking",
+          "activities": "Detailed description of what to do and why it fits kids ages ${trip.ages}",
+          "food": "Specific budget-conscious food recommendation",
+          "weatherAlt": "Indoor backup plan if weather turns bad",
+          "proTip": "Specific cost-saving or timing hack",
+          "nextLeg": "🚗 15m drive to Next Stop [Day 1 • Leg 1]"
+        }
+      ]
+    }
+  ]
+}`;
+    }
+
+    function buildMultiStopMapUrl(stops) {
+      if (!stops || stops.length === 0) return 'https://www.google.com/maps';
+      const encoded = stops.map(s => encodeURIComponent(s)).join('/');
+      return `https://www.google.com/maps/dir/${encoded}`;
+    }
+
+    function calcBlockFamilyCost(block, adults, kids) {
+      return ((Number(block.adultCost) || 0) * adults) +
+             ((Number(block.kidCost) || 0) * kids) +
+             (Number(block.flatCost) || 0);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastBanner');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    // ==================== STANDALONE OFFLINE COMPANION APP (.HTML) GENERATOR ====================
+    function generateStandaloneCompanionHtml(trip, checks) {
+      const adults = Number(trip.adults) || 2;
+      const kids = Number(trip.kids) || 0;
+      const numDays = trip.days.length;
+      const safeId = trip.dest.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_' + trip.startDate;
+
+      let grandTotal = 0;
+      const allRouteStops = [trip.origin];
+      trip.days.forEach(d => {
+        d.blocks.forEach(b => { grandTotal += calcBlockFamilyCost(b, adults, kids); });
+        (d.routeStops || []).forEach(s => { if (!allRouteStops.includes(s)) allRouteStops.push(s); });
+      });
+
+      const fullMapUrl = buildMultiStopMapUrl(allRouteStops);
+      const hotelMapUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(trip.hotel)}`;
+      const wx = trip.weatherInfo || getSeasonalWeather(trip.startDate, trip.dest);
+
+      const daysHtml = trip.days.map(day => {
+        const dayMapUrl = buildMultiStopMapUrl(day.routeStops);
+        const timelineItems = day.blocks.map(b => `
+          <li class="timeline-item"><span class="timeline-time">[Day ${day.dayNum}] ${b.time}</span> – ${b.title}</li>
+        `).join('');
+
+        const blocksCards = day.blocks.map(b => {
+          const totalFamCost = calcBlockFamilyCost(b, adults, kids);
+          const singleMapUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.mapSearch)}`;
+          return `
+            <div class="activity-card">
+              <div class="card-top-row">
+                <div class="card-header">${b.code} (${b.time})</div>
+                <span class="status-badge badge-${b.badge || 'free'}">${b.badgeText || 'Activity'}</span>
+              </div>
+              <h3 class="card-title">${b.title}</h3>
+              <table class="info-table">
+                <tr class="info-row"><td class="info-label">From → To</td><td class="info-value">${b.fromTo}</td></tr>
+                <tr class="info-row"><td class="info-label">Official URL</td><td class="info-value"><a href="${b.url}" target="_blank" rel="noopener">${b.urlText || 'Explore on Google Maps'} ↗</a></td></tr>
+                <tr class="info-row"><td class="info-label">Maps Search</td><td class="info-value">${b.mapSearch}</td></tr>
+                <tr class="info-row"><td class="info-label">Ticket & Cost</td><td class="info-value"><b>Total Family Cost (${adults}A + ${kids}K): $${totalFamCost.toFixed(2)}</b><br><span style="font-size:11.5px;color:#64748b;">${b.costNote}</span></td></tr>
+                <tr class="info-row"><td class="info-label">Activities</td><td class="info-value">${b.activities}</td></tr>
+                <tr class="info-row"><td class="info-label">Food Option</td><td class="info-value">${b.food}</td></tr>
+              </table>
+              <div class="note-box weather-alt">☔ <b>Weather Contingency:</b> ${b.weatherAlt}</div>
+              <div class="note-box pro-tip">💡 <b>Pro-Tip:</b> ${b.proTip}</div>
+              <div class="next-leg">
+                <span>${b.nextLeg}</span>
+                <a href="${singleMapUrl}" target="_blank" style="color:hsl(172,66%,38%);text-decoration:none;font-weight:700;">📍 Stop Map →</a>
+              </div>
+            </div>`;
+        }).join('');
+
+        return `
+          <div class="day-accordion">
+            <button class="day-accordion-header" onclick="this.parentElement.classList.toggle('collapsed')">
+              <div>
+                <div class="day-title">📅 Day ${day.dayNum}: ${day.dateStr}</div>
+                <div class="day-sub">${day.theme}</div>
+              </div>
+              <span class="day-chevron">▼</span>
+            </button>
+            <div class="day-accordion-body">
+              <ul class="timeline-overview">${timelineItems}</ul>
+              ${blocksCards}
+              <a href="${dayMapUrl}" target="_blank" class="btn-action btn-accent" style="margin-top:8px;">
+                🗺️ Launch Day ${day.dayNum} Consolidated Multi-Stop Route
+              </a>
+            </div>
+          </div>`;
+      }).join('');
+
+      let costRowsHtml = `<table class="info-table">`;
+      trip.days.forEach(d => {
+        d.blocks.forEach(b => {
+          const cost = calcBlockFamilyCost(b, adults, kids);
+          costRowsHtml += `<tr class="info-row"><td class="info-label">Day ${d.dayNum}</td><td class="info-value"><b>${b.title}</b><br><span style="font-size:11px;color:#64748b;">${b.costNote}</span></td><td class="info-value" style="text-align:right;font-weight:700;width:70px;">$${cost.toFixed(0)}</td></tr>`;
+        });
+      });
+      costRowsHtml += `<tr class="info-row" style="border-top:2px solid hsl(204,75%,22%);"><td class="info-label"><b>TOTAL EST.</b></td><td class="info-value"><b>All ${numDays} Days (${adults}A + ${kids}K)</b></td><td class="info-value" style="text-align:right;font-weight:800;font-size:15px;">$${grandTotal.toFixed(0)}</td></tr></table>`;
+
+      const cssText = document.querySelector('style').innerHTML;
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="${trip.title}">
+  <meta name="theme-color" content="#0f2942">
+  <title>${trip.title} // Offline Companion App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>${cssText}</style>
+</head>
+<body>
+  <div class="container">
+    <div class="pocket-topbar">
+      <span style="color:#38bdf8;font-weight:700;">⚡ OFFLINE TRIP COMPANION PWA</span>
+      <span style="font-size:11px;color:#94a3b8;">${trip.startDate} → ${trip.endDate}</span>
+    </div>
+    <div class="header">
+      <div class="header-tag">📲 SAVED OFFLINE MOBILE ITINERARY</div>
+      <h1>${trip.title}</h1>
+      <p>${trip.origin} → ${trip.dest} (${numDays} Days)</p>
+      <div class="base-hotel">🏨 Base: ${trip.hotel.split(',')[0]} • ${adults}A + ${kids}K</div>
+    </div>
+
+    <!-- TAB 1: DASHBOARD & NOTES -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="stats-grid">
+        <div class="stat-tile"><div class="stat-label">Trip Span</div><div class="stat-val">${numDays} Days</div><div class="stat-sub">${trip.startDate}</div></div>
+        <div class="stat-tile"><div class="stat-label">Est. Family Cost</div><div class="stat-val">$${grandTotal.toFixed(0)}</div><div class="stat-sub">${adults} Adults, ${kids} Kids</div></div>
+        <div class="stat-tile"><div class="stat-label">Weather Norm</div><div class="stat-val">${wx.summary.split('/')[0]}</div><div class="stat-sub">A/C: 12–3:30 PM</div></div>
+        <div class="stat-tile"><div class="stat-label">Packing Ready</div><div class="stat-val" id="compPackPct">0%</div><div class="stat-sub">Offline Sync</div></div>
+      </div>
+      <a href="${fullMapUrl}" target="_blank" class="btn-action btn-accent" style="margin-bottom:14px;">🗺️ Launch Full-Trip Google Maps Route</a>
+      <a href="${hotelMapUrl}" target="_blank" class="btn-action btn-outline" style="margin-bottom:16px;">🏨 Navigate to Base Hotel (${trip.hotel.split(',')[0]})</a>
+
+      <div class="section-card">
+        <div class="section-title"><span>📝 Live Trip Notes & Expense Log</span><span style="font-size:10px;color:var(--accent);">SAVED ON PHONE</span></div>
+        <textarea id="compNotes" class="textarea-ctrl" rows="5" placeholder="Jot down confirmation numbers, parking spot levels, or daily expenses here... (Auto-saves offline)"></textarea>
+      </div>
+    </div>
+
+    <!-- TAB 2: TIMELINE -->
+    <div class="tab-panel" id="tab-timeline">
+      ${daysHtml}
+    </div>
+
+    <!-- TAB 3: LOGISTICS -->
+    <div class="tab-panel" id="tab-logistics">
+      <div class="section-card">
+        <div class="section-title">🏨 Base Lodging & Rules</div>
+        <table class="info-table">
+          <tr class="info-row"><td class="info-label">Hotel</td><td class="info-value"><b>${trip.hotel}</b></td></tr>
+          <tr class="info-row"><td class="info-label">Rules</td><td class="info-value">${trip.constraints}</td></tr>
+          <tr class="info-row"><td class="info-label">Weather Tip</td><td class="info-value">${wx.outdoorTip}</td></tr>
+        </table>
+      </div>
+      <div class="section-card">
+        <div class="section-title">🎟️ Itemized Family Cost Breakdown</div>
+        ${costRowsHtml}
+      </div>
+    </div>
+
+    <!-- TAB 4: CHECKLIST -->
+    <div class="tab-panel" id="tab-checklist">
+      <div class="section-card">
+        <div class="section-title"><span>✅ Offline Packing & To-Do Checklist</span></div>
+        <div id="compCheckContainer"></div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="nav-tab active" data-tab="tab-overview"><span class="nav-ico">📊</span><span>Dashboard</span></button>
+      <button class="nav-tab" data-tab="tab-timeline"><span class="nav-ico">🗓️</span><span>Timeline</span></button>
+      <button class="nav-tab" data-tab="tab-logistics"><span class="nav-ico">🎟️</span><span>Logistics</span></button>
+      <button class="nav-tab" data-tab="tab-checklist"><span class="nav-ico">☑️</span><span>Checklist</span></button>
+    </nav>
+  </div>
+  <script>
+    const CHECK_STORAGE = 'companion_checks_${safeId}';
+    const NOTES_STORAGE = 'companion_notes_${safeId}';
+    const INITIAL_CHECKS = ${JSON.stringify(checks)};
+    let checks = JSON.parse(localStorage.getItem(CHECK_STORAGE) || 'null') || INITIAL_CHECKS;
+
+    function renderCompChecks() {
+      const done = checks.filter(c => c.done).length;
+      document.getElementById('compPackPct').textContent = (checks.length ? Math.round((done/checks.length)*100) : 0) + '%';
+      const cats = [...new Set(checks.map(c => c.cat))];
+      document.getElementById('compCheckContainer').innerHTML = cats.map(cat => \`
+        <div class="checklist-group">
+          <div style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;margin-bottom:6px;">\${cat}</div>
+          \${checks.filter(i => i.cat === cat).map(item => \`
+            <label class="check-item \${item.done ? 'checked' : ''}">
+              <input type="checkbox" \${item.done ? 'checked' : ''} onchange="toggleCheck('\${item.id}')">
+              <span>\${item.text}</span>
+            </label>
+          \`).join('')}
+        </div>
+      \`).join('');
+    }
+    window.toggleCheck = function(id) {
+      const item = checks.find(c => c.id === id);
+      if (item) { item.done = !item.done; localStorage.setItem(CHECK_STORAGE, JSON.stringify(checks)); renderCompChecks(); }
+    };
+    const notesEl = document.getElementById('compNotes');
+    notesEl.value = localStorage.getItem(NOTES_STORAGE) || '';
+    notesEl.addEventListener('input', () => localStorage.setItem(NOTES_STORAGE, notesEl.value));
+
+    document.querySelectorAll('.nav-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+    renderCompChecks();
+  <\/script>
+</body>
+</html>`;
+    }
+
+    function downloadCurrentTripCompanion() {
+      if (!activeTrip) return;
+      // Also save a copy into the Saved Trips Vault automatically
+      saveTripToVault(activeTrip, activeChecks, true);
+
+      const htmlContent = generateStandaloneCompanionHtml(activeTrip, activeChecks);
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const cleanCity = activeTrip.dest.split(',')[0].trim().replace(/[^a-z0-9]+/gi, '-');
+      const fileName = `${cleanCity}-Trip-${activeTrip.startDate}.html`;
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast(`📲 Downloaded "${fileName}" & saved to your Pocket Vault!`);
+    }
+
+    // ==================== SAVED TRIPS VAULT LOGIC (KEEP & DELETE) ====================
+    function getVaultTrips() {
+      try {
+        return JSON.parse(localStorage.getItem(VAULT_KEY) || '[]');
+      } catch (e) { return []; }
+    }
+
+    function saveTripToVault(trip, checks, silent = false, markKept = null) {
+      if (!trip) return;
+      const list = getVaultTrips();
+      const id = `${trip.dest.split(',')[0].trim()}_${trip.startDate}`;
+      const existingIdx = list.findIndex(x => x.id === id);
+      const prevKept = existingIdx >= 0 ? Boolean(list[existingIdx].kept) : false;
+      const isKept = markKept !== null ? Boolean(markKept) : prevKept;
+
+      const entry = {
+        id,
+        kept: isKept,
+        savedAt: new Date().toLocaleDateString(),
+        trip: JSON.parse(JSON.stringify(trip)),
+        checks: JSON.parse(JSON.stringify(checks || []))
+      };
+      if (existingIdx >= 0) list[existingIdx] = entry;
+      else list.unshift(entry);
+
+      // Sort Kept plans to the top
+      list.sort((a, b) => (b.kept ? 1 : 0) - (a.kept ? 1 : 0));
+
+      localStorage.setItem(VAULT_KEY, JSON.stringify(list));
+      renderVaultDrawer();
+      if (!silent) {
+        showToast(isKept
+          ? `📌 Kept & Locked "${trip.title}" in Saved Travel Plans!`
+          : `📂 Saved "${trip.title}" to Saved Travel Plans!`);
+      }
+    }
+
+    function renderVaultDrawer() {
+      const list = getVaultTrips();
+      const keptCount = list.filter(x => x.kept).length;
+      document.getElementById('savedCountBadge').textContent = `${list.length}${keptCount ? ' • ' + keptCount + '📌' : ''}`;
+
+      const drawerContainer = document.getElementById('savedTripsList');
+      const overviewContainer = document.getElementById('overviewSavedTripsList');
+
+      if (list.length === 0) {
+        const emptyMsg = `<div style="font-size:11.5px; color:#94a3b8; padding:6px 0;">No saved travel plans yet. Generate a trip or tap "📌 Keep Travel Plan" to store plans here.</div>`;
+        if (drawerContainer) drawerContainer.innerHTML = emptyMsg;
+        if (overviewContainer) overviewContainer.innerHTML = `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">No saved travel plans in vault. Tap <b>📌 Keep Current</b> above to save this itinerary.</div>`;
+        return;
+      }
+
+      if (drawerContainer) {
+        drawerContainer.innerHTML = list.map((item, idx) => `
+          <div class="saved-item" style="${item.kept ? 'border-left:3px solid #10b981; background:rgba(16,185,129,0.10);' : ''}">
+            <div>
+              <b>${item.trip.title}</b> (${item.trip.days.length}d)
+              ${item.kept ? '<span class="kept-pill">📌 KEPT</span>' : '<span class="draft-pill">DRAFT</span>'}<br>
+              <span style="font-size:10.5px; color:#94a3b8;">${item.trip.origin} → ${item.trip.dest} • ${item.trip.startDate}</span>
+            </div>
+            <div class="saved-item-actions">
+              <button class="mini-btn keep ${item.kept ? 'active' : ''}" onclick="toggleKeepVaultTrip(${idx})" title="${item.kept ? 'Kept (Click to Unkeep)' : 'Keep & Lock this plan'}">
+                ${item.kept ? '📌 Kept' : '📌 Keep'}
+              </button>
+              <button class="mini-btn" onclick="loadVaultTrip(${idx})">Load</button>
+              <button class="mini-btn del" onclick="deleteVaultTrip(${idx})" title="Delete this saved plan">🗑️ Delete</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if (overviewContainer) {
+        overviewContainer.innerHTML = list.map((item, idx) => `
+          <div class="vault-card-item ${item.kept ? 'is-kept' : ''}">
+            <div style="min-width:0; flex:1;">
+              <div style="font-weight:700; color:var(--primary); font-size:13px;">
+                ${item.trip.title} (${item.trip.days.length}d)
+                ${item.kept ? '<span class="kept-pill">📌 KEPT</span>' : '<span class="draft-pill">UNKEPT</span>'}
+              </div>
+              <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+                ${item.trip.origin} → ${item.trip.dest} • ${item.trip.startDate} to ${item.trip.endDate}
+              </div>
+            </div>
+            <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+              <button class="copy-pill" style="margin:0; ${item.kept ? 'background:#10b981;color:#fff;border-color:#059669;' : 'background:#ecfdf5;color:#047857;border-color:#6ee7b7;'}" onclick="toggleKeepVaultTrip(${idx})">
+                ${item.kept ? '📌 Kept' : '📌 Keep'}
+              </button>
+              <button class="copy-pill" style="margin:0;" onclick="loadVaultTrip(${idx})">📂 Load</button>
+              <button class="copy-pill" style="margin:0;" onclick="downloadVaultTrip(${idx})" title="Download Offline HTML">📥 .html</button>
+              <button class="copy-pill" style="margin:0; background:#fff1f2; color:#be123c; border-color:#fecdd3;" onclick="deleteVaultTrip(${idx})">🗑️ Delete</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    window.toggleKeepVaultTrip = function(idx) {
+      const list = getVaultTrips();
+      const item = list[idx];
+      if (!item) return;
+      item.kept = !item.kept;
+      list.sort((a, b) => (b.kept ? 1 : 0) - (a.kept ? 1 : 0));
+      localStorage.setItem(VAULT_KEY, JSON.stringify(list));
+      renderVaultDrawer();
+      showToast(item.kept
+        ? `📌 Marked "${item.trip.title}" as KEPT (Protected)!`
+        : `🔓 Unmarked "${item.trip.title}" (Can now be bulk-deleted).`);
+    };
+
+    window.loadVaultTrip = function(idx) {
+      const list = getVaultTrips();
+      const item = list[idx];
+      if (!item) return;
+      activeTrip = item.trip;
+      activeChecks = item.checks || synthesizeChecklistFromInputs(activeTrip, activeTrip.weatherInfo);
+      lastKnownDest = activeTrip.dest;
+      populateFormInputs(activeTrip);
+      localStorage.setItem(STATE_KEY, JSON.stringify(activeTrip));
+      localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+      renderAll();
+      renderChecklist();
+      document.getElementById('savedDrawer').classList.remove('open');
+      showToast(`📂 Loaded "${activeTrip.title}" from Saved Travel Plans!`);
+    };
+
+    window.downloadVaultTrip = function(idx) {
+      const list = getVaultTrips();
+      const item = list[idx];
+      if (!item) return;
+      const htmlContent = generateStandaloneCompanionHtml(item.trip, item.checks || []);
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const cleanCity = item.trip.dest.split(',')[0].trim().replace(/[^a-z0-9]+/gi, '-');
+      const fileName = `${cleanCity}-Trip-${item.trip.startDate}.html`;
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`📲 Downloaded "${fileName}"!`);
+    };
+
+    window.deleteVaultTrip = function(idx) {
+      const list = getVaultTrips();
+      const target = list[idx];
+      if (!target) return;
+      const removedTitle = target.trip.title;
+      list.splice(idx, 1);
+      localStorage.setItem(VAULT_KEY, JSON.stringify(list));
+      renderVaultDrawer();
+      showToast(`🗑️ Deleted "${removedTitle}" from Saved Travel Plans.`);
+    };
+
+    function clearUnkeptVaultTrips() {
+      const list = getVaultTrips();
+      const unkeptCount = list.filter(x => !x.kept).length;
+      if (unkeptCount === 0) {
+        showToast('ℹ️ No unkept draft plans to delete (all saved plans are marked 📌 Kept).');
+        return;
+      }
+      const keptOnly = list.filter(x => x.kept);
+      localStorage.setItem(VAULT_KEY, JSON.stringify(keptOnly));
+      renderVaultDrawer();
+      showToast(`🗑️ Deleted ${unkeptCount} unkept plan(s). Kept plans remain safe!`);
+    }
+
+    // ==================== RENDER ALL TABS FROM ACTIVE TRIP ====================
+    function renderAll() {
+      if (!activeTrip) return;
+      const adults = Number(activeTrip.adults) || 2;
+      const kids = Number(activeTrip.kids) || 0;
+      const numDays = activeTrip.days.length;
+
+      document.getElementById('hdrTitle').textContent = activeTrip.title;
+      document.getElementById('hdrSub').textContent = `${activeTrip.origin} → ${activeTrip.dest} | ${activeTrip.startDate} to ${activeTrip.endDate} (${numDays} Days)`;
+      document.getElementById('hdrHotel').textContent = `🏨 Base: ${activeTrip.hotel.split(',')[0]} • ${adults}A + ${kids}K`;
+
+      let grandTotal = 0;
+      const allRouteStops = [activeTrip.origin];
+      activeTrip.days.forEach(d => {
+        d.blocks.forEach(b => {
+          grandTotal += calcBlockFamilyCost(b, adults, kids);
+        });
+        (d.routeStops || []).forEach(s => {
+          if (!allRouteStops.includes(s)) allRouteStops.push(s);
+        });
+      });
+
+      const sDate = new Date(activeTrip.startDate + 'T12:00:00');
+      const eDate = new Date(activeTrip.endDate + 'T12:00:00');
+      const now = new Date();
+      const daysUntil = Math.ceil((sDate - now) / (1000 * 60 * 60 * 24));
+
+      document.getElementById('statCountdown').textContent = `${numDays} Days`;
+      document.getElementById('statDates').textContent = daysUntil > 0
+        ? `${formatShortDate(sDate)} – ${formatShortDate(eDate)} (In ${daysUntil}d)`
+        : `${formatShortDate(sDate)} – ${formatShortDate(eDate)}`;
+      document.getElementById('statTotalCost').textContent = `$${grandTotal.toFixed(0)}`;
+      document.getElementById('statPartySub').textContent = `${adults} Adults, ${kids} Kids (${activeTrip.ages})`;
+      document.getElementById('statWeather').textContent = activeTrip.weatherInfo ? activeTrip.weatherInfo.summary.split('/')[0] : '85°F';
+      document.getElementById('statHeatWindow').textContent = activeTrip.weatherInfo ? activeTrip.weatherInfo.summary : 'A/C Buffer: 12–3:30 PM';
+      document.getElementById('fullTripMapBtn').href = buildMultiStopMapUrl(allRouteStops);
+
+      document.getElementById('promptPre').textContent = buildPromptString(activeTrip);
+
+      document.getElementById('timelineHeaderSummary').textContent = `${numDays}-DAY GENERATED TIMELINE • ${activeTrip.dest.toUpperCase()}`;
+      const addBlockDaySelect = document.getElementById('addBlockDay');
+      addBlockDaySelect.innerHTML = activeTrip.days.map(d => `<option value="${d.dayNum}">Day ${d.dayNum}: ${d.dateStr}</option>`).join('');
+
+      const daysContainer = document.getElementById('daysContainer');
+      daysContainer.innerHTML = activeTrip.days.map(day => {
+        const dayMapUrl = buildMultiStopMapUrl(day.routeStops);
+        const timelineItemsHtml = day.blocks.map(b => `
+          <li class="timeline-item">
+            <span class="timeline-time">[Day ${day.dayNum}] ${b.time}</span> – ${b.title}
+          </li>
+        `).join('');
+
+        const blocksHtml = day.blocks.map(b => {
+          const totalFamCost = calcBlockFamilyCost(b, adults, kids);
+          const singleMapUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.mapSearch)}`;
+          return `
+            <div class="activity-card">
+              <div class="card-top-row">
+                <div class="card-header">${b.code} (${b.time})</div>
+                <span class="status-badge badge-${b.badge || 'free'}">${b.badgeText || 'Activity'}</span>
+              </div>
+              <h3 class="card-title">${b.title}</h3>
+              <table class="info-table">
+                <tr class="info-row">
+                  <td class="info-label">From → To</td>
+                  <td class="info-value">${b.fromTo}</td>
+                </tr>
+                <tr class="info-row">
+                  <td class="info-label">Official URL</td>
+                  <td class="info-value"><a href="${b.url}" target="_blank" rel="noopener">${b.urlText || 'Explore on Google Maps'} ↗</a></td>
+                </tr>
+                <tr class="info-row">
+                  <td class="info-label">Maps Search</td>
+                  <td class="info-value">
+                    <span>${b.mapSearch}</span>
+                    <button class="copy-pill" onclick="copyText('${b.mapSearch.replace(/'/g, "\\'")}', this)">Copy</button>
+                  </td>
+                </tr>
+                <tr class="info-row">
+                  <td class="info-label">Ticket & Cost</td>
+                  <td class="info-value">
+                    <b>Total Family Cost (${adults}A + ${kids}K): $${totalFamCost.toFixed(2)}</b><br>
+                    <span style="font-size:11.5px; color:var(--text-muted);">${b.costNote}</span>
+                  </td>
+                </tr>
+                <tr class="info-row">
+                  <td class="info-label">Activities</td>
+                  <td class="info-value">${b.activities}</td>
+                </tr>
+                <tr class="info-row">
+                  <td class="info-label">Food Option</td>
+                  <td class="info-value">${b.food}</td>
+                </tr>
+              </table>
+              <div class="note-box weather-alt">
+                ☔ <b>Weather Contingency:</b> ${b.weatherAlt}
+              </div>
+              <div class="note-box pro-tip">
+                💡 <b>Pro-Tip:</b> ${b.proTip}
+              </div>
+              <div class="next-leg">
+                <span>${b.nextLeg}</span>
+                <a href="${singleMapUrl}" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700;">📍 Stop Map →</a>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="day-accordion">
+            <button class="day-accordion-header" onclick="this.parentElement.classList.toggle('collapsed')">
+              <div>
+                <div class="day-title">📅 Day ${day.dayNum}: ${day.dateStr}</div>
+                <div class="day-sub">${day.theme}</div>
+              </div>
+              <span class="day-chevron">▼</span>
+            </button>
+            <div class="day-accordion-body">
+              <ul class="timeline-overview">
+                ${timelineItemsHtml}
+              </ul>
+              ${blocksHtml}
+              <a href="${dayMapUrl}" target="_blank" class="btn-action btn-accent" style="margin-top:8px;">
+                🗺️ Launch Day ${day.dayNum} Consolidated Multi-Stop Route
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('logisticsHotelTable').innerHTML = `
+        <tr class="info-row">
+          <td class="info-label">Origin → Dest</td>
+          <td class="info-value"><b>${activeTrip.origin} → ${activeTrip.dest}</b> (${numDays} Days)</td>
+        </tr>
+        <tr class="info-row">
+          <td class="info-label">Base Lodging</td>
+          <td class="info-value"><b>${activeTrip.hotel}</b></td>
+        </tr>
+        <tr class="info-row">
+          <td class="info-label">Check-In Rules</td>
+          <td class="info-value">${activeTrip.constraints}</td>
+        </tr>
+        <tr class="info-row">
+          <td class="info-label">Transport & Pace</td>
+          <td class="info-value">${activeTrip.transport.toUpperCase()} • ${activeTrip.pace.toUpperCase()} Pace • ${activeTrip.budget.toUpperCase()}</td>
+        </tr>
+      `;
+      document.getElementById('hotelMapBtn').href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(activeTrip.hotel)}`;
+      document.getElementById('costPartyLabel').textContent = `${adults} Adults + ${kids} Kids (Ages: ${activeTrip.ages})`;
+
+      let costRowsHtml = `<table class="info-table">`;
+      activeTrip.days.forEach(d => {
+        d.blocks.forEach(b => {
+          const cost = calcBlockFamilyCost(b, adults, kids);
+          costRowsHtml += `
+            <tr class="info-row">
+              <td class="info-label">Day ${d.dayNum}</td>
+              <td class="info-value">
+                <b>${b.title}</b><br>
+                <span style="font-size:11px; color:var(--text-muted);">${b.costNote}</span>
+              </td>
+              <td class="info-value" style="text-align:right; font-weight:700; width:70px;">$${cost.toFixed(0)}</td>
+            </tr>
+          `;
+        });
+      });
+      costRowsHtml += `
+        <tr class="info-row" style="border-top:2px solid var(--primary);">
+          <td class="info-label"><b>TOTAL EST.</b></td>
+          <td class="info-value"><b>All ${numDays} Days (Tickets, Meals & Transit)</b></td>
+          <td class="info-value" style="text-align:right; font-weight:800; color:var(--primary); font-size:15px;">$${grandTotal.toFixed(0)}</td>
+        </tr>
+      </table>`;
+      document.getElementById('costBreakdownList').innerHTML = costRowsHtml;
+
+      const wx = activeTrip.weatherInfo || getSeasonalWeather(activeTrip.startDate, activeTrip.dest);
+      document.getElementById('weatherLogisticsTable').innerHTML = `
+        <tr class="info-row">
+          <td class="info-label">Expected Norms</td>
+          <td class="info-value"><b>${wx.summary}</b> in ${activeTrip.dest}</td>
+        </tr>
+        <tr class="info-row">
+          <td class="info-label">A/C Buffer Slot</td>
+          <td class="info-value"><b>${wx.heatWindow}</b> — Indoor museums, aquariums, or lunch scheduled here</td>
+        </tr>
+        <tr class="info-row">
+          <td class="info-label">Outdoor Strategy</td>
+          <td class="info-value">${wx.outdoorTip}</td>
+        </tr>
+      `;
+    }
+
+    // ==================== RENDER & PERSIST CHECKLIST ====================
+    function renderChecklist() {
+      const container = document.getElementById('checklistContainer');
+      const doneCount = activeChecks.filter(i => i.done).length;
+      const pct = activeChecks.length ? Math.round((doneCount / activeChecks.length) * 100) : 0;
+      document.getElementById('statPackPct').textContent = `${pct}%`;
+      document.getElementById('statChecklistCount').textContent = `${doneCount}/${activeChecks.length} Ready`;
+
+      const categories = [...new Set(activeChecks.map(i => i.cat))];
+      container.innerHTML = categories.map(cat => {
+        const items = activeChecks.filter(i => i.cat === cat);
+        return `
+          <div class="checklist-group">
+            <div style="font-size:11px; font-weight:700; color:var(--primary); text-transform:uppercase; margin-bottom:6px;">${cat}</div>
+            ${items.map(item => `
+              <label class="check-item ${item.done ? 'checked' : ''}">
+                <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleCheckItem('${item.id}')">
+                <span>${item.text}</span>
+              </label>
+            `).join('')}
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.toggleCheckItem = function(id) {
+      const target = activeChecks.find(i => i.id === id);
+      if (target) {
+        target.done = !target.done;
+        localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+        renderChecklist();
+      }
+    };
+
+    // ==================== TRIGGER FULL DYNAMIC GENERATION ====================
+    function runFullDynamicSynthesis(switchTabId) {
+      const cfg = readFormInputs();
+      activeTrip = synthesizeTripFromInputs(cfg);
+      activeChecks = synthesizeChecklistFromInputs(cfg, activeTrip.weatherInfo);
+
+      localStorage.setItem(STATE_KEY, JSON.stringify(activeTrip));
+      localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+
+      // Auto-register in Saved Travel Plans list so user can Keep or Delete
+      saveTripToVault(activeTrip, activeChecks, true, null);
+
+      renderAll();
+      renderChecklist();
+
+      showToast(`⚡ Generated ${activeTrip.days.length}-Day Itinerary for ${activeTrip.dest}! (Tap 📌 Keep to lock)`);
+
+      if (switchTabId) {
+        document.querySelectorAll('.nav-tab').forEach(b => {
+          b.classList.toggle('active', b.dataset.tab === switchTabId);
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => {
+          p.classList.toggle('active', p.id === switchTabId);
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function autoAdaptFieldsForDestination(forceAdapt) {
+      const originVal = document.getElementById('cfgOrigin').value.trim() || 'Origin';
+      const destVal = document.getElementById('cfgDest').value.trim();
+      if (!destVal) return;
+
+      const destChanged = forceAdapt || (destVal.toLowerCase() !== lastKnownDest.toLowerCase());
+      if (!destChanged) return;
+      lastKnownDest = destVal;
+
+      const destShort = destVal.split(',')[0].trim();
+      const catalogHit = DEST_AUTO_CATALOG.find(item => item.match.test(destVal));
+
+      if (catalogHit) {
+        document.getElementById('cfgHotel').value = catalogHit.hotel;
+        document.getElementById('cfgDay1Food').value = catalogHit.day1Food;
+        document.getElementById('cfgMustSees').value = catalogHit.mustSees;
+        document.getElementById('cfgConstraints').value = catalogHit.constraints;
+      } else {
+        document.getElementById('cfgHotel').value = `${destShort} Family Resort & Suites, ${destVal}`;
+        document.getElementById('cfgDay1Food').value = `Midway Highway Lunch (${originVal.split(',')[0]} → ${destShort}) & ${destShort} Local Family Cafe`;
+        document.getElementById('cfgMustSees').value = `${destShort} Waterfront & Central Park, ${destShort} Historic Fort & Heritage District, ${destShort} Science & Cultural Museum, ${destShort} Beach & Sunset Promenade, ${destShort} Scenic Overlook & Botanical Gardens`;
+        document.getElementById('cfgConstraints').value = `Check-in after 3:00 PM Day 1; cluster ${destShort} attractions geographically to prevent backtracking; indoor A/C block 12:00–3:15 PM`;
+      }
+      document.getElementById('presetSelect').value = 'custom';
+    }
+
+    document.getElementById('cfgDest').addEventListener('change', () => {
+      autoAdaptFieldsForDestination(true);
+      runFullDynamicSynthesis(null);
+    });
+
+    document.getElementById('cfgOrigin').addEventListener('change', () => {
+      const destVal = document.getElementById('cfgDest').value.trim();
+      const catalogHit = DEST_AUTO_CATALOG.find(item => item.match.test(destVal));
+      if (!catalogHit && destVal) {
+        const destShort = destVal.split(',')[0].trim();
+        const originShort = (document.getElementById('cfgOrigin').value.trim() || 'Origin').split(',')[0].trim();
+        document.getElementById('cfgDay1Food').value = `Midway Highway Lunch (${originShort} → ${destShort}) & ${destShort} Local Family Cafe`;
+      }
+      runFullDynamicSynthesis(null);
+    });
+
+    document.getElementById('generateDynamicBtn').addEventListener('click', () => {
+      autoAdaptFieldsForDestination(false);
+      runFullDynamicSynthesis('tab-timeline');
+    });
+
+    // Download Companion Buttons
+    document.getElementById('downloadCompanionBtn').addEventListener('click', downloadCurrentTripCompanion);
+    document.getElementById('downloadCompanionBtn2').addEventListener('click', downloadCurrentTripCompanion);
+
+    // Keep & Delete Saved Travel Plans Controls
+    document.getElementById('toggleVaultBtn').addEventListener('click', () => {
+      document.getElementById('savedDrawer').classList.toggle('open');
+    });
+    document.getElementById('saveCurrentToVaultBtn').addEventListener('click', () => {
+      if (activeTrip) saveTripToVault(activeTrip, activeChecks, false, true);
+    });
+    document.getElementById('keepHeaderBtn').addEventListener('click', () => {
+      if (activeTrip) saveTripToVault(activeTrip, activeChecks, false, true);
+    });
+    document.getElementById('keepCurrentOverviewBtn').addEventListener('click', () => {
+      if (activeTrip) saveTripToVault(activeTrip, activeChecks, false, true);
+    });
+    document.getElementById('clearUnkeptDrawerBtn').addEventListener('click', clearUnkeptVaultTrips);
+    document.getElementById('clearUnkeptOverviewBtn').addEventListener('click', clearUnkeptVaultTrips);
+
+    // Preset Dropdown Loader
+    document.getElementById('presetSelect').addEventListener('change', e => {
+      const val = e.target.value;
+      if (PRESET_CONFIGS[val]) {
+        populateFormInputs(PRESET_CONFIGS[val]);
+        lastKnownDest = PRESET_CONFIGS[val].dest;
+        runFullDynamicSynthesis(null);
+      }
+    });
+
+    // Theme Chips Toggle
+    document.getElementById('themeChips').addEventListener('click', e => {
+      const chip = e.target.closest('.pref-chip');
+      if (chip) {
+        chip.classList.toggle('selected');
+        if (activeTrip) document.getElementById('promptPre').textContent = buildPromptString(activeTrip);
+      }
+    });
+
+    window.copyText = function(txt, btn) {
+      navigator.clipboard.writeText(txt);
+      const old = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = old, 1400);
+    };
+
+    document.getElementById('copyPromptBtn').addEventListener('click', function() {
+      autoAdaptFieldsForDestination(false);
+      const cfg = readFormInputs();
+      activeTrip = synthesizeTripFromInputs(cfg);
+      const fullPrompt = buildPromptString(activeTrip);
+      document.getElementById('promptPre').textContent = fullPrompt;
+      copyText(fullPrompt, this);
+    });
+
+    // Mode B: Import Pasted AI JSON Response
+    document.getElementById('importAiJsonBtn').addEventListener('click', () => {
+      const raw = document.getElementById('pasteAiJsonInput').value.trim();
+      if (!raw) {
+        alert('Please paste the JSON response from your AI chat first.');
+        return;
+      }
+      try {
+        // Strip markdown ```json fences if present
+        const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+        const parsed = JSON.parse(cleaned);
+        if (!parsed.days || !Array.isArray(parsed.days)) {
+          throw new Error('JSON must contain a "days" array.');
+        }
+        const cfg = readFormInputs();
+        activeTrip = {
+          ...cfg,
+          title: `${cfg.dest.split(',')[0].trim()} Family Trip`,
+          weatherInfo: getSeasonalWeather(cfg.startDate, cfg.dest),
+          days: parsed.days
+        };
+        activeChecks = synthesizeChecklistFromInputs(cfg, activeTrip.weatherInfo);
+        localStorage.setItem(STATE_KEY, JSON.stringify(activeTrip));
+        localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+        saveTripToVault(activeTrip, activeChecks, true, null);
+        renderAll();
+        renderChecklist();
+        showToast('✨ Imported AI-Optimized Itinerary! Switching to Timeline...');
+        document.querySelector('[data-tab="tab-timeline"]').click();
+      } catch (e) {
+        alert('Could not parse AI JSON: ' + e.message);
+      }
+    });
+
+    // Mode A: Live Gemini AI API Integration (persists API key in localStorage)
+    const apiKeyInput = document.getElementById('geminiApiKey');
+    apiKeyInput.value = localStorage.getItem(GEMINI_KEY_STORAGE) || '';
+    apiKeyInput.addEventListener('input', () => {
+      localStorage.setItem(GEMINI_KEY_STORAGE, apiKeyInput.value.trim());
+    });
+
+    document.getElementById('runGeminiLiveBtn').addEventListener('click', async () => {
+      const apiKey = apiKeyInput.value.trim();
+      if (!apiKey) {
+        alert('Please paste your Google Gemini API Key (AIzaSy...) in the box above first, or use Mode B (Copy Prompt → Paste AI Response) below for free!');
+        return;
+      }
+      localStorage.setItem(GEMINI_KEY_STORAGE, apiKey);
+
+      const btn = document.getElementById('runGeminiLiveBtn');
+      const oldText = btn.textContent;
+      btn.textContent = '⏳ Researching & Optimizing via Gemini AI...';
+      btn.disabled = true;
+
+      try {
+        autoAdaptFieldsForDestination(false);
+        const cfg = readFormInputs();
+        const baseTrip = synthesizeTripFromInputs(cfg);
+        const prompt = buildPromptString(baseTrip);
+
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: "application/json" }
+          })
+        });
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message || 'API Error');
+        const rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!rawJson) throw new Error('No valid JSON returned from Gemini API.');
+        const parsed = JSON.parse(rawJson);
+        if (parsed.days && Array.isArray(parsed.days)) {
+          activeTrip = {
+            ...cfg,
+            title: `${cfg.dest.split(',')[0].trim()} Family Trip`,
+            weatherInfo: getSeasonalWeather(cfg.startDate, cfg.dest),
+            days: parsed.days
+          };
+          activeChecks = synthesizeChecklistFromInputs(cfg, activeTrip.weatherInfo);
+          localStorage.setItem(STATE_KEY, JSON.stringify(activeTrip));
+          localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+          saveTripToVault(activeTrip, activeChecks, true, null);
+          renderAll();
+          renderChecklist();
+          showToast('✨ Live Gemini AI Itinerary Optimized! Switching to Timeline...');
+          document.querySelector('[data-tab="tab-timeline"]').click();
+        }
+      } catch (err) {
+        alert('Gemini API Error: ' + err.message);
+      } finally {
+        btn.textContent = oldText;
+        btn.disabled = false;
+      }
+    });
+
+    // Add Custom Time Block
+    document.getElementById('saveCustomBlockBtn').addEventListener('click', () => {
+      const dayNum = parseInt(document.getElementById('addBlockDay').value, 10);
+      const time = document.getElementById('addBlockTime').value.trim() || '2:00 PM – 3:30 PM';
+      const title = document.getElementById('addBlockTitle').value.trim();
+      const badge = document.getElementById('addBlockBadge').value;
+      const costRaw = document.getElementById('addBlockCost').value.trim() || '0 / 0';
+      const mapSearch = document.getElementById('addBlockMap').value.trim() || activeTrip.dest;
+      const desc = document.getElementById('addBlockDesc').value.trim() || 'Custom family activity stop.';
+
+      if (!title) {
+        alert('Please enter an Activity Title.');
+        return;
+      }
+
+      const parts = costRaw.split('/');
+      const adultCost = parseFloat(parts[0]) || 0;
+      const kidCost = parts[1] !== undefined ? (parseFloat(parts[1]) || 0) : 0;
+
+      const targetDay = activeTrip.days.find(d => d.dayNum === dayNum);
+      if (targetDay) {
+        const blockIdx = targetDay.blocks.length + 1;
+        targetDay.blocks.push({
+          code: `Day ${dayNum} • Block ${blockIdx}`,
+          time,
+          title,
+          badge,
+          badgeText: badge.toUpperCase(),
+          fromTo: `Scheduled Block (${time})`,
+          url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapSearch)}`,
+          urlText: 'View on Google Maps',
+          mapSearch,
+          adultCost,
+          kidCost,
+          flatCost: 0,
+          costNote: `Custom Stop ($${adultCost}/adult, $${kidCost}/kid)`,
+          activities: desc,
+          food: 'Local snacks or dining nearby',
+          weatherAlt: 'Adjust timing or pivot to indoor backup.',
+          proTip: 'Added via custom block builder.',
+          nextLeg: `🚗 Continue to next stop [Day ${dayNum} • Leg ${blockIdx}]`
+        });
+        targetDay.routeStops.push(mapSearch);
+        localStorage.setItem(STATE_KEY, JSON.stringify(activeTrip));
+        renderAll();
+        document.getElementById('addBlockTitle').value = '';
+        showToast(`✅ Added "${title}" to Day ${dayNum}!`);
+      }
+    });
+
+    document.getElementById('toggleAllDaysBtn').addEventListener('click', () => {
+      const cards = document.querySelectorAll('.day-accordion');
+      const anyCollapsed = Array.from(cards).some(c => c.classList.contains('collapsed'));
+      cards.forEach(c => {
+        if (anyCollapsed) c.classList.remove('collapsed');
+        else c.classList.add('collapsed');
+      });
+    });
+
+    document.getElementById('addCheckBtn').addEventListener('click', () => {
+      const inp = document.getElementById('newCheckInput');
+      const text = inp.value.trim();
+      if (!text) return;
+      activeChecks.push({
+        id: 'custom_' + Date.now(),
+        cat: 'Custom Family Gear & Tasks',
+        text,
+        done: false
+      });
+      localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+      inp.value = '';
+      renderChecklist();
+    });
+
+    document.getElementById('resetChecksBtn').addEventListener('click', () => {
+      const cfg = readFormInputs();
+      activeChecks = synthesizeChecklistFromInputs(cfg, activeTrip.weatherInfo);
+      localStorage.setItem(CHECK_KEY, JSON.stringify(activeChecks));
+      renderChecklist();
+      showToast('🔄 Checklist regenerated for current trip profile!');
+    });
+
+    document.querySelectorAll('.nav-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    (function init() {
+      const savedTrip = localStorage.getItem(STATE_KEY);
+      const savedChecks = localStorage.getItem(CHECK_KEY);
+
+      if (savedTrip) {
+        try {
+          activeTrip = JSON.parse(savedTrip);
+          populateFormInputs(activeTrip);
+          lastKnownDest = activeTrip.dest || '';
+        } catch (e) {}
+      }
+
+      if (!activeTrip) {
+        populateFormInputs(PRESET_CONFIGS.kerala);
+        lastKnownDest = PRESET_CONFIGS.kerala.dest;
+        document.getElementById('presetSelect').value = 'kerala';
+        const cfg = readFormInputs();
+        activeTrip = synthesizeTripFromInputs(cfg);
+      }
+
+      if (savedChecks) {
+        try { activeChecks = JSON.parse(savedChecks); } catch (e) {}
+      }
+      if (!activeChecks || !activeChecks.length) {
+        activeChecks = synthesizeChecklistFromInputs(activeTrip, activeTrip.weatherInfo);
+      }
+
+      if (getVaultTrips().length === 0 && activeTrip) {
+        saveTripToVault(activeTrip, activeChecks, true, true);
+      }
+
+      renderAll();
+      renderChecklist();
+      renderVaultDrawer();
+    })();
+  </script>
+</body>
+</html>
