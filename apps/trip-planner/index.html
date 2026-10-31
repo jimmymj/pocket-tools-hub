@@ -852,9 +852,9 @@
     <!-- Dynamic Trip Header -->
     <div class="header">
       <div class="header-tag" id="hdrPaceBadge">⚡ LIVE-AI & SMART ROUTE OPTIMIZER</div>
-      <h1 id="hdrTitle">Kochi Family Trip</h1>
-      <p id="hdrSub">Kannur, Kerala → Kochi, Kerala | Aug 6 – 8, 2026</p>
-      <div class="base-hotel" id="hdrHotel">🏨 Base: Fort Kochi Heritage Resort</div>
+      <h1 id="hdrTitle">New Trip Plan</h1>
+      <p id="hdrSub">Enter Origin & Destination below to generate your route</p>
+      <div class="base-hotel" id="hdrHotel">🏨 Base: Ready for Destination Input</div>
       <div class="header-action-row" style="flex-wrap:wrap;">
         <button class="hdr-dl-btn" id="keepHeaderBtn" style="background:#10b981; color:#052e16;">
           📌 Keep Travel Plan
@@ -2593,32 +2593,34 @@ Respond ONLY with valid JSON matching this exact schema (no markdown code fences
       const daysHtml = trip.days.map(day => {
         const dayMapUrl = buildMultiStopMapUrl(day.routeStops);
         const timelineItems = day.blocks.map(b => `
-          <li class="timeline-item"><span class="timeline-time">[Day ${day.dayNum}] ${b.time}</span> – ${b.title}</li>
+          <li class="timeline-item"><span class="timeline-time">[Day ${Number(day.dayNum) || 1}] ${escapeHtml(b.time)}</span> – ${escapeHtml(b.title)}</li>
         `).join('');
 
         const blocksCards = day.blocks.map(b => {
           const totalFamCost = calcBlockFamilyCost(b, adults, kids);
-          const singleMapUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.mapSearch)}`;
+          const singleMapUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.mapSearch || '')}`;
+          const safeUrl = sanitizeUrl(b.url);
+          const safeBadge = ['drive', 'ticket', 'food', 'free'].includes(b.badge) ? b.badge : 'free';
           return `
             <div class="activity-card">
               <div class="card-top-row">
-                <div class="card-header">${b.code} (${b.time})</div>
-                <span class="status-badge badge-${b.badge || 'free'}">${b.badgeText || 'Activity'}</span>
+                <div class="card-header">${escapeHtml(b.code)} (${escapeHtml(b.time)})</div>
+                <span class="status-badge badge-${safeBadge}">${escapeHtml(b.badgeText || 'Activity')}</span>
               </div>
-              <h3 class="card-title">${b.title}</h3>
+              <h3 class="card-title">${escapeHtml(b.title)}</h3>
               <table class="info-table">
-                <tr class="info-row"><td class="info-label">From → To</td><td class="info-value">${b.fromTo}</td></tr>
-                <tr class="info-row"><td class="info-label">Official URL</td><td class="info-value"><a href="${b.url}" target="_blank" rel="noopener">${b.urlText || 'Explore on Google Maps'} ↗</a></td></tr>
-                <tr class="info-row"><td class="info-label">Maps Search</td><td class="info-value">${b.mapSearch}</td></tr>
-                <tr class="info-row"><td class="info-label">Ticket & Cost</td><td class="info-value"><b>Total Family Cost (${adults}A + ${kids}K): $${totalFamCost.toFixed(2)}</b><br><span style="font-size:11.5px;color:#64748b;">${b.costNote}</span></td></tr>
-                <tr class="info-row"><td class="info-label">Activities</td><td class="info-value">${b.activities}</td></tr>
-                <tr class="info-row"><td class="info-label">Food Option</td><td class="info-value">${b.food}</td></tr>
+                <tr class="info-row"><td class="info-label">From → To</td><td class="info-value">${escapeHtml(b.fromTo)}</td></tr>
+                <tr class="info-row"><td class="info-label">Official URL</td><td class="info-value"><a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(b.urlText || 'Explore on Google Maps')} ↗</a></td></tr>
+                <tr class="info-row"><td class="info-label">Maps Search</td><td class="info-value">${escapeHtml(b.mapSearch)}</td></tr>
+                <tr class="info-row"><td class="info-label">Ticket & Cost</td><td class="info-value"><b>Total Family Cost (${adults}A + ${kids}K): $${totalFamCost.toFixed(2)}</b><br><span style="font-size:11.5px;color:#64748b;">${escapeHtml(b.costNote)}</span></td></tr>
+                <tr class="info-row"><td class="info-label">Activities</td><td class="info-value">${escapeHtml(b.activities)}</td></tr>
+                <tr class="info-row"><td class="info-label">Food Option</td><td class="info-value">${escapeHtml(b.food)}</td></tr>
               </table>
-              <div class="note-box weather-alt">☔ <b>Weather Contingency:</b> ${b.weatherAlt}</div>
-              <div class="note-box pro-tip">💡 <b>Pro-Tip:</b> ${b.proTip}</div>
+              <div class="note-box weather-alt">☔ <b>Weather Contingency:</b> ${escapeHtml(b.weatherAlt)}</div>
+              <div class="note-box pro-tip">💡 <b>Pro-Tip:</b> ${escapeHtml(b.proTip)}</div>
               <div class="next-leg">
-                <span>${b.nextLeg}</span>
-                <a href="${singleMapUrl}" target="_blank" style="color:hsl(172,66%,38%);text-decoration:none;font-weight:700;">📍 Stop Map →</a>
+                <span>${escapeHtml(b.nextLeg)}</span>
+                <a href="${singleMapUrl}" target="_blank" rel="noopener noreferrer" style="color:hsl(172,66%,38%);text-decoration:none;font-weight:700;">📍 Stop Map →</a>
               </div>
             </div>`;
         }).join('');
@@ -2627,16 +2629,16 @@ Respond ONLY with valid JSON matching this exact schema (no markdown code fences
           <div class="day-accordion">
             <button class="day-accordion-header" onclick="this.parentElement.classList.toggle('collapsed')">
               <div>
-                <div class="day-title">📅 Day ${day.dayNum}: ${day.dateStr}</div>
-                <div class="day-sub">${day.theme}</div>
+                <div class="day-title">📅 Day ${Number(day.dayNum) || 1}: ${escapeHtml(day.dateStr)}</div>
+                <div class="day-sub">${escapeHtml(day.theme)}</div>
               </div>
               <span class="day-chevron">▼</span>
             </button>
             <div class="day-accordion-body">
               <ul class="timeline-overview">${timelineItems}</ul>
               ${blocksCards}
-              <a href="${dayMapUrl}" target="_blank" class="btn-action btn-accent" style="margin-top:8px;">
-                🗺️ Launch Day ${day.dayNum} Consolidated Multi-Stop Route
+              <a href="${dayMapUrl}" target="_blank" rel="noopener noreferrer" class="btn-action btn-accent" style="margin-top:8px;">
+                🗺️ Launch Day ${Number(day.dayNum) || 1} Consolidated Multi-Stop Route
               </a>
             </div>
           </div>`;
@@ -2646,7 +2648,7 @@ Respond ONLY with valid JSON matching this exact schema (no markdown code fences
       trip.days.forEach(d => {
         d.blocks.forEach(b => {
           const cost = calcBlockFamilyCost(b, adults, kids);
-          costRowsHtml += `<tr class="info-row"><td class="info-label">Day ${d.dayNum}</td><td class="info-value"><b>${b.title}</b><br><span style="font-size:11px;color:#64748b;">${b.costNote}</span></td><td class="info-value" style="text-align:right;font-weight:700;width:70px;">$${cost.toFixed(0)}</td></tr>`;
+          costRowsHtml += `<tr class="info-row"><td class="info-label">Day ${Number(d.dayNum) || 1}</td><td class="info-value"><b>${escapeHtml(b.title)}</b><br><span style="font-size:11px;color:#64748b;">${escapeHtml(b.costNote)}</span></td><td class="info-value" style="text-align:right;font-weight:700;width:70px;">$${cost.toFixed(0)}</td></tr>`;
         });
       });
       costRowsHtml += `<tr class="info-row" style="border-top:2px solid hsl(204,75%,22%);"><td class="info-label"><b>TOTAL EST.</b></td><td class="info-value"><b>All ${numDays} Days (${adults}A + ${kids}K)</b></td><td class="info-value" style="text-align:right;font-weight:800;font-size:15px;">$${grandTotal.toFixed(0)}</td></tr></table>`;
@@ -2854,9 +2856,9 @@ Respond ONLY with valid JSON matching this exact schema (no markdown code fences
         drawerContainer.innerHTML = list.map((item, idx) => `
           <div class="saved-item" style="${item.kept ? 'border-left:3px solid #10b981; background:rgba(16,185,129,0.10);' : ''}">
             <div>
-              <b>${item.trip.title}</b> (${item.trip.days.length}d)
+              <b>${escapeHtml(item.trip.title)}</b> (${Number(item.trip.days.length) || 1}d)
               ${item.kept ? '<span class="kept-pill">📌 KEPT</span>' : '<span class="draft-pill">DRAFT</span>'}<br>
-              <span style="font-size:10.5px; color:#94a3b8;">${item.trip.origin} → ${item.trip.dest} • ${item.trip.startDate}</span>
+              <span style="font-size:10.5px; color:#94a3b8;">${escapeHtml(item.trip.origin)} → ${escapeHtml(item.trip.dest)} • ${escapeHtml(item.trip.startDate)}</span>
             </div>
             <div class="saved-item-actions">
               <button class="mini-btn keep ${item.kept ? 'active' : ''}" onclick="toggleKeepVaultTrip(${idx})" title="${item.kept ? 'Kept (Click to Unkeep)' : 'Keep & Lock this plan'}">
@@ -2874,11 +2876,11 @@ Respond ONLY with valid JSON matching this exact schema (no markdown code fences
           <div class="vault-card-item ${item.kept ? 'is-kept' : ''}">
             <div style="min-width:0; flex:1;">
               <div style="font-weight:700; color:var(--primary); font-size:13px;">
-                ${item.trip.title} (${item.trip.days.length}d)
+                ${escapeHtml(item.trip.title)} (${Number(item.trip.days.length) || 1}d)
                 ${item.kept ? '<span class="kept-pill">📌 KEPT</span>' : '<span class="draft-pill">UNKEPT</span>'}
               </div>
               <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
-                ${item.trip.origin} → ${item.trip.dest} • ${item.trip.startDate} to ${item.trip.endDate}
+                ${escapeHtml(item.trip.origin)} → ${escapeHtml(item.trip.dest)} • ${escapeHtml(item.trip.startDate)} to ${escapeHtml(item.trip.endDate)}
               </div>
             </div>
             <div style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
